@@ -89,9 +89,21 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
                  https://doi.org/10.1007/11360360_17
                  Data manually extracted from the plot using the very
                  useful tool WebPlotDigitizer.
-        'my_dset': separate datapoints extracted from various references currently 
-                   only listed in my hand-written notebook,
-                   will be included here at a later stage.
+        'my_dset': separate datapoints extracted from various references 
+                   following list shows the refs used for each experiment
+                   START: Gates et al., PoP Vol. 5, No. 5, p 1775 (1998)
+                          https://doi.org/10.1063/1.872819
+                   Globus-M: Gusev et al., NF Vol. 55, p 104016 (2015)
+                             https://doi.org/10.1088/0029-5515/55/10/104016
+                   NSTX: Kaye et al., NF Vol. 55, p 104002 (2015)
+                         https://doi.org/10.1088/0029-5515/55/10/104002
+                   MAST: Chapman et al., NF Vol. 55, p 104008 (2015)
+                         https://doi.org/10.1088/0029-5515/55/10/104008
+                   W7-X (lim): Hirsch et al., NF Vol. 52, p 086010 (2017)
+                               https://doi.org/10.1088/1741-4326/aa7372
+                   W7-X (div): Pedersen et al., PPCF Vol. 61, p 014035 (2019)
+                               https://doi.org/10.1088/1361-6587/aaec25
+                   ITER: STILL MISSING
         'EUROfusion': data manually extracted from plot used by EUROfusion
                       using the very useful tool WebPlotDigitizer.
 

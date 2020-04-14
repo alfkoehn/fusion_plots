@@ -89,8 +89,9 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
                  https://doi.org/10.1007/11360360_17
                  Data manually extracted from the plot using the very
                  useful tool WebPlotDigitizer.
-        'my_dset': separate datapoints extracted from various references 
-                   following list shows the refs used for each experiment
+        'my_dset': separate datapoints extracted from various references,
+                   more details are included in my (hand-written) notebook.
+                   Following list shows the refs used for each experiment:
                    START: Gates et al., PoP Vol. 5, No. 5, p 1775 (1998)
                           https://doi.org/10.1063/1.872819
                    Globus-M: Gusev et al., NF Vol. 55, p 104016 (2015)
@@ -103,7 +104,9 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
                                https://doi.org/10.1088/1741-4326/aa7372
                    W7-X (div): Pedersen et al., PPCF Vol. 61, p 014035 (2019)
                                https://doi.org/10.1088/1361-6587/aaec25
-                   ITER: STILL MISSING
+                   ITER: ########## REF STILL MISSING #####################
+                   TCV: Karpuskov et al., FED Vol. 123, p 468 (2017)
+                        https://doi.org/10.1016/j.fusengdes.2017.02.076
         'EUROfusion': data manually extracted from plot used by EUROfusion
                       using the very useful tool WebPlotDigitizer.
 
@@ -168,16 +171,16 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
                                ] )
     elif dataset == 'my_dset':
         names = np.array( ['START', 'Globus-M', 'NSTX', 'MAST', 
-                           'W7-X (lim)', 'W7-X (div)', 'ITER'
+                           'W7-X (lim)', 'W7-X (div)', 'ITER', 'TCV'
                           ] )
         device_types = np.array( [ 3, 3, 3, 3, 
-                                   1, 1, 2
+                                   1, 1, 2, 2
                                  ] )
         T_vals = np.array( [ 0.25, 0.5, 1., 0.9, 
-                             1.,   3.5, 20.  
+                             1.,   3.5, 20., 3.7
                            ] )
         nTtau_vals = np.array( [ 2.50000000e+16, 4.50000000e+16, 6.00000000e+17, 8.10000000e+17,
-                                 2.00000000e+18, 6.60000000e+19, 3.00000000e+21
+                                 2.00000000e+18, 6.60000000e+19, 3.00000000e+21, 3e18
                                ] )
     elif dataset == 'EUROfusion':
         names = np.array( [ 'T3', 'TFR', 'T10', 'PLT', 

@@ -64,6 +64,13 @@ def cross_section_NRL(E, reaction='DT'):
     sigma_T = (A[4]+((A[3]-A[2]*E)**2+1)**(-1) * A[1])/(E*(np.exp(A[0]/np.sqrt(E))-1))
     return(sigma_T)
 
+#%%
+# keV <-> K conversions for upper x-axis
+def keV_to_K(keV):
+    return keV/k_B*e/1e3
+def K_to_keV(K):
+    return K*k_B/e*1e3
+
 
 #%%
 """
@@ -82,23 +89,17 @@ ax.loglog(E, sigma_DD, E, sigma_DT, E, sigma_DHe3, lw=3)
 ax.set_ylim([1e-32, 2e-27])
 ax.set_xlim(1,1e3)
 
+# Create an upper x-axis with temperature in millions K
+# and format the logscale ticks in natural numbers instead of scientific notation
 # Format tick values as numbers
 maj_formatter = matplotlib.ticker.ScalarFormatter()
 maj_formatter.set_scientific(False)
 ax.get_xaxis().set_major_formatter(maj_formatter) 
 ax.set_xticks([1, 10, 100, 1000])
-
-# Top x-axis for energies in millions of K
-def keV_to_K(keV):
-    return keV/k_B*e/1e3
-def K_to_keV(K):
-    return K*k_B/e*1e3
-
 ax2 = ax.secondary_xaxis('top', functions=(keV_to_K, K_to_keV))
 ax2.set_xticks([20, 100, 1000, 5000])
 # force matplotlib LogFormatterSciNotation to not use scientific notation until 10^5
 plt.rcParams['axes.formatter.min_exponent'] = 5
-
 [a.tick_params(labelsize=14) for a in (ax, ax2)]
 
 ax.grid(True, which='minor')
@@ -126,12 +127,29 @@ fig, ax = plt.subplots()
 ax.loglog(E, DD, 
           E, DT, 
           E, DHe3, lw=3)
+
+# Create an upper x-axis with temperature in millions K
+# and format the logscale ticks in natural numbers instead of scientific notation
+# Format tick values as numbers
+maj_formatter = matplotlib.ticker.ScalarFormatter()
+maj_formatter.set_scientific(False)
+ax.get_xaxis().set_major_formatter(maj_formatter) 
+ax.set_xticks([1, 10, 100, 1000])
+ax2 = ax.secondary_xaxis('top', functions=(keV_to_K, K_to_keV))
+ax2.set_xticks([20, 100, 1000, 5000])
+# force matplotlib LogFormatterSciNotation to not use scientific notation until 10^5
+plt.rcParams['axes.formatter.min_exponent'] = 5
+[a.tick_params(labelsize=14) for a in (ax, ax2)]
+
 ax.grid(True)
 ax.set_xlabel('Temperature [keV]', fontsize=16)
 ax.set_ylabel(r'Reaction Rates $\left<\sigma v\right>$ [$cm^3/s$]', fontsize=16)
 ax.tick_params(labelsize=14)
 ax.set_ylim([1e-26, 2e-15])
+ax.set_xlim(1,1e3)
 ax.legend(('D-D', 'D-T', 'D-He$^3$'), loc='best', fontsize=18)
+ax2.set_xlabel('$T$ [million K]', fontsize=16)
+
 fig.tight_layout()
 # fig.text( .71, .98, credit_str, fontsize=7)
 fig.savefig('reaction_rates_section_vs_E.png', dpi=300)

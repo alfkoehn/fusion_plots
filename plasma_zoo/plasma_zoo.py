@@ -597,6 +597,16 @@ def main():
 
     ax1.minorticks_off()
 
+    # write credits into plot, to ensure that people know they can use the plot
+    # (somebody once told me, every plot appearing somewhere in the internet
+    #  should contain information on how to use it, otherwise it is useless)
+    # you probably want to remove it when you make you own plot
+    # attribution would still be gratefully acknowledged :)
+    # also note that the licence refers only to that specific plot
+    # the licence for the code is mentioned above and in the LICENCE file
+    credit_str = u'Alf Köhn-Seeman, CC BY-SA 4.0'
+    fig1.text( .65, .89, credit_str, fontsize=7 )
+
     if len( fname_plot ):
         plt.savefig( fname_plot, bbox_inches='tight', dpi=600 )
         print( '    plot written into {0}'.format( fname_plot ) )

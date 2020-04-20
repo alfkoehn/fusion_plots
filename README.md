@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/254018187.svg)](https://zenodo.org/badge/latestdoi/254018187)
+
 # Fusion plots
 Plots and figures relevant for a fusion research lecture.
 

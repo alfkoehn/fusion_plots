@@ -224,7 +224,7 @@ def main():
     #;{{{
 
     # plot configuration
-    fname_plot  = 'CMA.png'
+    fname_plot  = 'CMA_diagram.png'
     # linewidth for O- and X-mode
     lw_O        = 3
     lw_X        = 3

@@ -3,8 +3,12 @@
 """
 Plot a CMA diagram.
 
-The horizontal axis corresponds to X=(omega_pe/omega_0)^2, thus to n_e.
-The vertical axis corresponds to Y=(omega_ce/omega_0), thus to |B_0|.
+In a typical CMA diagram, the horizontal axis, corresponds to X=(omega_pe/omega_0)^2,
+where omega_pe is the electron plasma frequency and omega_0 the angular wave frequency,
+thus it corresponds to the electron plasma density n_e.
+The vertical axis corresponds to Y=(omega_ce/omega_0), where omega_ce is the 
+electron cyclotron frequency, thus it corresponds to the absolute value of the 
+background magnetic field B_0.
 
 Simply run this script to produce a png plot:
     $ python CMA_diagram.py
@@ -51,6 +55,27 @@ def make_plot( fname_plot='' ):
 def oplot_Ocut( ax, y_range=[], linestyle='solid', linewidth=3, color='black' ):
     #;{{{
     """
+    Overplot the O-mode cut-off in a CMA diagram.
+
+    In a typical CMA diagram, the horizontal axis corresponds to X=(omega_pe/omega_0)^2,
+    where omega_pe is the electron plasma frequency and omega_0 the angular wave frequency;
+    the vertical axis corresponds to Y=(omega_ce/omega_0), where omega_ce is the 
+    electron cyclotron frequency.
+    The O-mode cut-off is thus located at X=1.
+
+    Parameters
+    ----------
+    ax: Axes object
+    y_range: list or np.array
+        2-element list or array specifying the start and end point for the line 
+        indicating the O-mode cut-off. If not provided, the range of the y-axis
+        is used.
+    linestyle: str
+    linewidth: int
+    color: str
+
+    Returns
+    -------
     """
     if len(y_range) == 0:
         y0, y1 = ax.get_ylim()
@@ -75,6 +100,36 @@ def oplot_Ocut( ax, y_range=[], linestyle='solid', linewidth=3, color='black' ):
 def oplot_XRcut( ax, linestyle='solid', linewidth=3, color='black' ):
     #;{{{
     """
+    Overplot the X-mode R cut-off in a CMA diagram.
+
+    In a typical CMA diagram, the horizontal axis corresponds to X=(omega_pe/omega_0)^2,
+    where omega_pe is the electron plasma frequency and omega_0 the angular wave frequency;
+    the vertical axis corresponds to Y=(omega_ce/omega_0), where omega_ce is the 
+    electron cyclotron frequency.
+    The right-hand cut-off reads
+        w_Rcut = 0.5*( sqrt(w_ce^2+4*w_pe^2) + w_ce )
+        <=>
+        w_Rcut - 0.5*w_ce = 0.5 * sqrt(w_ce^2+4*w_pe^2)
+    Normalizing to w_0 yields
+        2 - Y = sqrt(Y^2 + 4*X)
+        <=>
+        4 - 4Y + Y^2 = Y^2 + 4*X
+        <=>
+        4*(1-Y) = 4*X
+        <=>
+        1-Y = X
+        <=>
+        Y = 1 - X
+
+    Parameters
+    ----------
+    ax: Axes object
+    linestyle: str
+    linewidth: int
+    color: str
+
+    Returns
+    ------
     """
 
     x0, x1  = ax.get_ylim()
@@ -98,6 +153,40 @@ def oplot_XRcut( ax, linestyle='solid', linewidth=3, color='black' ):
 def oplot_XLcut( ax, x_range=[], linestyle='solid', linewidth=3, color='black' ):
     #;{{{
     """
+    Overplot the X-mode L cut-off in a CMA diagram.
+
+    In a typical CMA diagram, the horizontal axis corresponds to X=(omega_pe/omega_0)^2,
+    where omega_pe is the electron plasma frequency and omega_0 the angular wave frequency;
+    the vertical axis corresponds to Y=(omega_ce/omega_0), where omega_ce is the 
+    electron cyclotron frequency.
+    The left-hand cut-off reads
+        w_Lcut = 0.5*( sqrt(w_ce^2+4*w_pe^2) - w_ce )
+        <=>
+        w_Rcut + 0.5*w_ce = 0.5 * sqrt(w_ce^2+4*w_pe^2)
+    Normalizing to w_0 yields
+        2 + Y = sqrt(Y^2 + 4*X)
+        <=>
+        4 + 4Y + Y^2 = Y^2 + 4*X
+        <=>
+        4*(1+Y) = 4*X
+        <=>
+        1+Y = X
+        <=>
+        Y = X - 1
+
+    Parameters
+    ----------
+    ax: Axes object
+    x_range: list or np.array
+        2-element list or array specifying the start and end point for the line 
+        indicating the X-mode L cut-off. If not provided, the range of the x-axis
+        is used.
+    linestyle: str
+    linewidth: int
+    color: str
+
+    Returns
+    ------
     """
 
     if len(x_range) == 0:
@@ -122,6 +211,27 @@ def oplot_Xres( ax, theta=np.array([90.]), annotation_x=np.array([.5]),
               ):
     #;{{{
     """
+    Overplot the X-mode upper-hybrid resonance in a CMA diagram.
+
+    In a typical CMA diagram, the horizontal axis corresponds to X=(omega_pe/omega_0)^2,
+    where omega_pe is the electron plasma frequency and omega_0 the angular wave frequency;
+    the vertical axis corresponds to Y=(omega_ce/omega_0), where omega_ce is the 
+    electron cyclotron frequency.
+    
+    Parameters
+    ----------
+    ax: Axes object
+    theta: np.array
+        Angle of microwave propagation with respect to the background magnetic field B_0,
+        units are degrees.
+    annotation_x: np.array
+        X-coordinates for the labels (which are the theta-values) to be written into the plot.
+    linestyle: str
+    linewidth: int
+    color: str
+
+    Returns
+    ------
     """
 
     for ii in range( len(theta) ):
@@ -162,6 +272,30 @@ def oplot_Ores( ax, theta=np.array([30.]), annotation_x=np.array([1.5]),
               ):
     #;{{{
     """
+    Overplot the O-mode O resonance in a CMA diagram.
+
+    In a typical CMA diagram, the horizontal axis corresponds to X=(omega_pe/omega_0)^2,
+    where omega_pe is the electron plasma frequency and omega_0 the angular wave frequency;
+    the vertical axis corresponds to Y=(omega_ce/omega_0), where omega_ce is the 
+    electron cyclotron frequency.
+    
+    Parameters
+    ----------
+    ax: Axes object
+    theta: np.array
+        Angle of microwave propagation with respect to the background magnetic field B_0,
+        units are degrees.
+    annotation_x: np.array
+        X-coordinates for the labels (which are the theta-values) to be written into the plot.
+    x_range: list or np.array
+        2-element list or array, where currently only the second element is used to specify 
+        the end point for the line indicating the O-resonance. If not provided, the range of 
+        the x-axis is used.
+    linestyle: str
+    linewidth: int
+    color: str
+
+    Returns
     """
 
     if len(x_range) == 0:
@@ -200,6 +334,25 @@ def oplot_Ores( ax, theta=np.array([30.]), annotation_x=np.array([1.5]),
 def oplot_ECR( ax, x_range=[], linestyle='solid', linewidth=3, color='black' ):
     #;{{{
     """
+    Overplot the electron cyclotron resonance in a CMA diagram.
+
+    In a typical CMA diagram, the horizontal axis corresponds to X=(omega_pe/omega_0)^2,
+    where omega_pe is the electron plasma frequency and omega_0 the angular wave frequency;
+    the vertical axis corresponds to Y=(omega_ce/omega_0), where omega_ce is the 
+
+    Parameters
+    ----------
+    ax: Axes object
+    x_range: list or np.array
+        2-element list or array specifying the start and end point for the line 
+        indicating the electron cyclotron resonance. If not provided, the range of the x-axis
+        is used.
+    linestyle: str
+    linewidth: int
+    color: str
+
+    Returns
+    ------
     """
 
     if len(x_range) == 0:

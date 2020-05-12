@@ -72,85 +72,53 @@ def K_to_keV(K):
     return K*k_B/e*1e3
 
 
-#%%
-"""
-Plot the total cross section in m^2 for various species vs incident energy in keV
-"""
-E = np.logspace(0, 3, 501)
-barns_to_SI = 1e-24 * 1e-4 # in m^2
+def main():
+#;{{{
+    """
+    Plot the total cross section in m^2 for various species vs incident energy in keV
+    """
+    E = np.logspace(0, 3, 501)
+    barns_to_SI = 1e-24 * 1e-4 # in m^2
 
-sigma_DD = barns_to_SI*(cross_section_NRL(E, 'DD_a') + cross_section_NRL(E, 'DD_b'))
-sigma_DT = barns_to_SI*cross_section_NRL(E, 'DT')
-sigma_DHe3 = barns_to_SI*cross_section_NRL(E, 'DHe3')
+    sigma_DD    = barns_to_SI*(cross_section_NRL(E, 'DD_a') + cross_section_NRL(E, 'DD_b'))
+    sigma_DT    = barns_to_SI*cross_section_NRL(E, 'DT')
+    sigma_DHe3  = barns_to_SI*cross_section_NRL(E, 'DHe3')
 
-fig, ax = plt.subplots()
-ax.loglog(E, sigma_DD, E, sigma_DT, E, sigma_DHe3, lw=3)
+    fig, ax1 = plt.subplots()
+    ax1.loglog(E, sigma_DD, E, sigma_DT, E, sigma_DHe3, lw=3)
 
-ax.set_ylim([1e-32, 2e-27])
-ax.set_xlim(1,1e3)
+    ax1.set_ylim([1e-32, 2e-27])
+    ax1.set_xlim(1,1e3)
 
-# Create an upper x-axis with temperature in millions K
-# and format the logscale ticks in natural numbers instead of scientific notation
-# Format tick values as numbers
-maj_formatter = matplotlib.ticker.ScalarFormatter()
-maj_formatter.set_scientific(False)
-ax.get_xaxis().set_major_formatter(maj_formatter) 
-ax.set_xticks([1, 10, 100, 1000])
-ax2 = ax.secondary_xaxis('top', functions=(keV_to_K, K_to_keV))
-ax2.set_xticks([20, 100, 1000, 5000])
-# force matplotlib LogFormatterSciNotation to not use scientific notation until 10^5
-plt.rcParams['axes.formatter.min_exponent'] = 5
-[a.tick_params(labelsize=14) for a in (ax, ax2)]
+    # Create an upper x-axis with temperature in millions K
+    # and format the logscale ticks in natural numbers instead of scientific notation
+    # Format tick values as numbers
+    maj_formatter = matplotlib.ticker.ScalarFormatter()
+    maj_formatter.set_scientific(False)
+    ax1.get_xaxis().set_major_formatter(maj_formatter) 
+    ax1.set_xticks([1, 10, 100, 1000])
+    ax2 = ax1.secondary_xaxis('top', functions=(keV_to_K, K_to_keV))
+    ax2.set_xticks([20, 100, 1000, 5000])
+    # force matplotlib LogFormatterSciNotation to not use scientific notation until 10^5
+    plt.rcParams['axes.formatter.min_exponent'] = 5
+    [a.tick_params(labelsize=14) for a in (ax1, ax2)]
 
-ax.grid(True, which='minor')
-ax.set_xlabel('Deuteron Energy [keV]', fontsize=16)
-ax.set_ylabel('Cross section $\sigma$ [$m^2$]', fontsize=16)
-ax.legend(('D-D', 'D-T', 'D-He$^3$'), loc='best', fontsize=18)
-ax2.set_xlabel('$T$ [million K]', fontsize=16)
+    ax1.grid(True, which='both')
+    ax1.set_xlabel('Deuteron Energy [keV]', fontsize=16)
+    ax1.set_ylabel('Cross section $\sigma$ [$m^2$]', fontsize=16)
+    ax1.legend(('D-D', 'D-T', 'D-He$^3$'), loc='best', fontsize=18)
+    ax2.set_xlabel('$T$ [million K]', fontsize=16)
 
-fig.tight_layout()
-# fig.text( .71, .98, credit_str, fontsize=7)
-fig.savefig('cross_sections_vs_temperature.png', dpi=300)
+    # set ticks to point inwards (looks nicer, in my opinion)
+    ax1.tick_params(axis='both', which='both', direction='in', top=False, right=True)
+    ax2.tick_params(axis='both', which='both', direction='in', top=True,  right=False)
 
-#%%
-"""
-Plot the Reaction rates (reactivity) <sigma v> in cm^3/s as a function of E,
-the energy in keV of the incident particle [the first ion of the reaction label]
-Data from NRL formulary.
-See also
-https://en.wikipedia.org/wiki/Nuclear_fusion#Maxwell_averaged_nuclear_cross_sections
-"""
-E, DT, DD, DHe3,TT,THe3 = np.loadtxt('reaction_rates_vs_energy_incident_particle.csv', 
-                   skiprows=1, unpack=True)
+    fig.tight_layout()
+    # fig.text( .71, .98, credit_str, fontsize=7)
+    fig.savefig('cross_sections_vs_temperature.png', dpi=300)
+#;}}}
 
-fig, ax = plt.subplots()
-ax.loglog(E, DD, 
-          E, DT, 
-          E, DHe3, lw=3)
 
-# Create an upper x-axis with temperature in millions K
-# and format the logscale ticks in natural numbers instead of scientific notation
-# Format tick values as numbers
-maj_formatter = matplotlib.ticker.ScalarFormatter()
-maj_formatter.set_scientific(False)
-ax.get_xaxis().set_major_formatter(maj_formatter) 
-ax.set_xticks([1, 10, 100, 1000])
-ax2 = ax.secondary_xaxis('top', functions=(keV_to_K, K_to_keV))
-ax2.set_xticks([20, 100, 1000, 5000])
-# force matplotlib LogFormatterSciNotation to not use scientific notation until 10^5
-plt.rcParams['axes.formatter.min_exponent'] = 5
-[a.tick_params(labelsize=14) for a in (ax, ax2)]
-
-ax.grid(True)
-ax.set_xlabel('Temperature [keV]', fontsize=16)
-ax.set_ylabel(r'Reaction Rates $\left<\sigma v\right>$ [$cm^3/s$]', fontsize=16)
-ax.tick_params(labelsize=14)
-ax.set_ylim([1e-26, 2e-15])
-ax.set_xlim(1,1e3)
-ax.legend(('D-D', 'D-T', 'D-He$^3$'), loc='best', fontsize=18)
-ax2.set_xlabel('$T$ [million K]', fontsize=16)
-
-fig.tight_layout()
-# fig.text( .71, .98, credit_str, fontsize=7)
-fig.savefig('reaction_rates_section_vs_E.png', dpi=300)
+if __name__ == '__main__':
+    main()
 

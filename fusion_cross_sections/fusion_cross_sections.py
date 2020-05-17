@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 """ 
-Plot the reaction rates and the cross section as a function of energy
-
-Data taken from NRL Formulary:
-https://www.nrl.navy.mil/ppd/content/nrl-plasma-formulary
-See also The Magnetic Fusion Energy Formulary:
-https://github.com/MFEFormulary/MFEFormulary
+Plot the cross-section as a function of energy
 """
-__author__      = 'Julien Hillairet'
-__email__       = 'julien.hillairet@cea.fr'
-__copyright__   = 'CEA/IRFM'
+
+__author__      = 'Alf Köhn-Seemann, Julien Hillairet'
+__email__       = 'koehn@igvp.uni-stuttgart.de, julien.hillairet@cea.fr'
+__copyright__   = 'Uni Stuttgart, CEA/IRFM'
 __license__     = 'MIT'
 
 # write credits into plot, to ensure that people know they can use the plot
@@ -25,7 +21,7 @@ credit_str = f'{__author__}, CC BY-SA 4.0'
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker
-from scipy.constants import e, Boltzmann as k_B
+import scipy.constants as consts
 
 #%%
 def cross_section_NRL(E, reaction='DT'):
@@ -77,7 +73,8 @@ def cross_section_Miley( T_ion, reaction='DT') :
 def cross_section_Bosch( T_ion, reaction='DT' ):
 #;{{{
     """
-    Bosch Nuclear Fusion (1992)
+    H.-S. Bosch et al,  Nuclear Fusion 32, 611 (1992)
+    https://doi.org/10.1088/0029-5515/32/4/I07
 
     Energy refers to the energy available in the center-of-mass
     frame (CM). For particle A with mass m_A striking a stationary
@@ -102,8 +99,8 @@ def cross_section_Bosch( T_ion, reaction='DT' ):
         A   = [ 5.7501e6, 2.5226e3, 4.5566e1, .0, .0 ]
         B   = [ -3.1995e-3, -8.5530e-6, 5.9014e-8, .0 ] 
     elif reaction == 'DD':
-        sigma_T_a = cross_section_Bosch( T_ion, reaction='DT_a' )
-        sigma_T_b = cross_section_Bosch( T_ion, reaction='DT_b' )
+        sigma_T_a = cross_section_Bosch( T_ion, reaction='DD_a' )
+        sigma_T_b = cross_section_Bosch( T_ion, reaction='DD_b' )
         return sigma_T_a + sigma_T_b
     elif reaction == 'DD_a':
         energy_range = np.array( [ .5, 5000] )
@@ -137,9 +134,9 @@ def cross_section_Bosch( T_ion, reaction='DT' ):
 #%%
 # keV <-> K conversions for upper x-axis
 def keV_to_K(keV):
-    return keV/k_B*e/1e3
+    return keV/consts.Boltzmann*consts.e/1e3
 def K_to_keV(K):
-    return K*k_B/e*1e3
+    return K*consts.Boltzmann/consts.e*1e3
 
 
 def make_plot( fname_plot='' ):
@@ -189,9 +186,9 @@ def main():
         sigma_DT    = barns_to_SI*cross_section_NRL(T_ion, 'DT')
         sigma_DHe3  = barns_to_SI*cross_section_NRL(T_ion, 'DHe3')
     elif dataset == 'Bosch':
-        sigma_DD    = barns_to_SI*(cross_section_Bosch(T_ion, 'DD_a') + cross_section_NRL(T_ion, 'DD_b'))
-        sigma_DT    = barns_to_SI*cross_section_Bosch(T_ion, 'DT')
-        sigma_DHe3  = barns_to_SI*cross_section_Bosch(T_ion, 'DHe3')
+        sigma_DD    = barns_to_SI*cross_section_Bosch(T_ion, reaction='DD') 
+        sigma_DT    = barns_to_SI*cross_section_Bosch(T_ion, reaction='DT')
+        sigma_DHe3  = barns_to_SI*cross_section_Bosch(T_ion, reaction='DHe3')
 
     fig, ax1 = plt.subplots()
     ax1.loglog(T_ion, sigma_DD, T_ion, sigma_DT, T_ion, sigma_DHe3, lw=3)
@@ -213,18 +210,16 @@ def main():
     [a.tick_params(labelsize=14) for a in (ax1, ax2)]
 
     ax1.grid(True, which='both')
-    ax1.set_xlabel('Deuteron Energy [keV]', fontsize=16)
-    ax1.set_ylabel('Cross section $\sigma$ [$\mathrm{m}^2$]', fontsize=16)
+    ax1.set_xlabel('Centre-of-mass energy in keV', fontsize=16)
+    ax1.set_ylabel('Cross section $\sigma$ in $\mathrm{m}^2$', fontsize=16)
     ax1.legend(('D-D', 'D-T', 'D-He$^3$'), loc='best', fontsize=18)
-    ax2.set_xlabel('$T$ [million K]', fontsize=16)
+    ax2.set_xlabel('$T$ in million K', fontsize=16)
 
     # set ticks to point inwards (looks nicer, in my opinion)
     ax1.tick_params(axis='both', which='both', direction='in', top=False, right=True)
     ax2.tick_params(axis='both', which='both', direction='in', top=True,  right=False)
 
-    #fig.tight_layout()
     # fig.text( .71, .98, credit_str, fontsize=7)
-    #fig.savefig('cross_sections_vs_temperature__{0}.png'.format(dataset), dpi=300)
     make_plot( fname_plot='cross_sections_vs_temperature__2.png' )
 #;}}}
 

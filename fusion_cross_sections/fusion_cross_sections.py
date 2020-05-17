@@ -142,6 +142,32 @@ def K_to_keV(K):
     return K*k_B/e*1e3
 
 
+def make_plot( fname_plot='' ):
+#;{{{
+    '''
+    Output a plot, either to X-window (default) or into file. 
+
+    Parameters
+    ----------
+    fname_plot: str
+        if empty, plot will be output into X-window
+
+    Returns
+    -------
+    '''
+
+
+    if len(fname_plot) > 0:
+        plt.savefig( fname_plot, dpi=600, bbox_inches='tight' )
+        #fig.tight_layout()
+        #fig.savefig( fname_plot, dpi=600 )
+        print( 'written plot into file {0}'.format(fname_plot) )
+    else:
+        plt.show()
+
+#;}}}
+
+
 def main():
 #;{{{
     """
@@ -196,9 +222,10 @@ def main():
     ax1.tick_params(axis='both', which='both', direction='in', top=False, right=True)
     ax2.tick_params(axis='both', which='both', direction='in', top=True,  right=False)
 
-    fig.tight_layout()
+    #fig.tight_layout()
     # fig.text( .71, .98, credit_str, fontsize=7)
-    fig.savefig('cross_sections_vs_temperature__{0}.png'.format(dataset), dpi=300)
+    #fig.savefig('cross_sections_vs_temperature__{0}.png'.format(dataset), dpi=300)
+    make_plot( fname_plot='cross_sections_vs_temperature__2.png' )
 #;}}}
 
 

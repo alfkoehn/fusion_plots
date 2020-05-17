@@ -64,6 +64,63 @@ def cross_section_NRL(E, reaction='DT'):
     sigma_T = (A[4]+((A[3]-A[2]*E)**2+1)**(-1) * A[1])/(E*(np.exp(A[0]/np.sqrt(E))-1))
     return(sigma_T)
 
+
+def cross_section_Miley( T_ion, reaction='DT') :
+#;{{{
+    """
+    """
+
+    sigma_T = (T*(np.exp(A[0]/np.sqrt(T)) - 1.))**(-1) * ((A[1]/(1.+(A[2]*T-A[3])**2)) + A[4] )
+#;}}}
+
+
+def cross_section_Bosch( T_ion, reaction='DT' ):
+#;{{{
+    """
+    """
+
+    # T_ion: keV
+    # cross-section in mb
+    # reactions as a function of the energy in the CM frame
+
+    T = T_ion
+
+    if reaction == 'DT':
+        # energy range: .5 - 550 keV
+        B_G = 34.3827   # sqrt(keV)
+        A   = [ 6.927e4, 7.454e8, 2.050e6, 5.2002e4, .0 ]
+        B   = [ 6.38e1, -9.95e-1, 6.981e-5, 1.728e-4 ]
+    elif reaction == 'He3D':
+        # energy range: .3 - 900 keV
+        B_G = 68.7508   # sqrt(keV)
+        A   = [ 5.7501e6, 2.5226e3, 4.5566e1, .0, .0 ]
+        B   = [ -3.1995e-3, -8.5530e-6, 5.9014e-8, .0 ] 
+    elif reaction == 'DD':
+        sigma_T_a = cross_section_Bosch( T_ion, reaction='DT_a' )
+        sigma_T_b = cross_section_Bosch( T_ion, reaction='DT_b' )
+        return sigma_T_a + sigma_T_b
+    elif reaction == 'DD_a':
+        # energy range: .5 - 5000 keV
+        B_G = 31.3970   # sqrt(keV)
+        A   = [ 5.5576e4, 2.1054e2, -3.2638e-2, 1.4987e-6, 1.8181e-10 ]
+        B   = [ .0, .0, .0, .0 ]
+    elif reaction == 'DD_b':
+        # energy range: .5 - 4900 keV
+        B_G = 31.3970   # sqrt(keV)
+        A   = [ 5.3701e4, 3.3027e2, -1.2706e-1, 2.9327e-5, -2.5151e-9 ]
+        B   = [ .0, .0, .0, .0 ]
+
+    # Padé polynomial
+    S_func = lambda T: ( 
+            A[0] + T*(A[1] + T*(A[2] + T*(A[3] + T*A[4]))) / 
+            (1.  + T*(B[0] + T*(B[1] + T*(B[2] + T*B[3]))))
+            )
+
+    sigma_T = S_func(T) / (T*np.exp(B_G/np.sqrt(T)))
+
+    return sigma_T
+#;}}}
+
 #%%
 # keV <-> K conversions for upper x-axis
 def keV_to_K(keV):
@@ -119,6 +176,18 @@ def main():
 #;}}}
 
 
+def main_test():
+
+    T_ion = np.array( [3, 4, 5, 6, 7, 8, 9, 10, 100, 400 ] )
+
+    for ii in range(len(T_ion)):
+        print( ' T_ion = {0:3.0f} keV  ==>  sigma = {1:9.3e}'.format(
+               T_ion[ii], cross_section_Bosch( T_ion[ii], reaction='DT' ) ) )
+#               T_ion[ii], cross_section_Bosch( T_ion[ii], reaction='He3D' ) ) )
+#               T_ion[ii], cross_section_Bosch( T_ion[ii], reaction='DD_a' ) ) )
+#               T_ion[ii], cross_section_Bosch( T_ion[ii], reaction='DD_b' ) ) )
+
 if __name__ == '__main__':
-    main()
+    #main()
+    main_test()
 

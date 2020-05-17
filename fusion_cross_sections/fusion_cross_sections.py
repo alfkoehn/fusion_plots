@@ -77,21 +77,27 @@ def cross_section_Miley( T_ion, reaction='DT') :
 def cross_section_Bosch( T_ion, reaction='DT' ):
 #;{{{
     """
+    Bosch Nuclear Fusion (1992)
+
+    Energy refers to the energy available in the center-of-mass
+    frame (CM). For particle A with mass m_A striking a stationary
+    particle B, following holds: E_A = E*(m_A+m_B)/m_B
     """
 
     # T_ion: keV
-    # cross-section in mb
-    # reactions as a function of the energy in the CM frame
+    # cross-section in mb (millibarn, corresponding to 1e-31 m^2)
+    # reactions as a function of the energy in the centre-of-mass (CM) frame
 
     T = T_ion
 
-    if reaction == 'DT':
-        # energy range: .5 - 550 keV
+    if reaction == 'DT' or reaction == 'TD':
+        # valid energy range in keV
+        energy_range = np.array( [.5, 550] )
         B_G = 34.3827   # sqrt(keV)
         A   = [ 6.927e4, 7.454e8, 2.050e6, 5.2002e4, .0 ]
         B   = [ 6.38e1, -9.95e-1, 6.981e-5, 1.728e-4 ]
-    elif reaction == 'He3D':
-        # energy range: .3 - 900 keV
+    elif reaction == 'He3D' or reaction == 'DHe3' :
+        energy_range = np.array( [.3, 900] )
         B_G = 68.7508   # sqrt(keV)
         A   = [ 5.7501e6, 2.5226e3, 4.5566e1, .0, .0 ]
         B   = [ -3.1995e-3, -8.5530e-6, 5.9014e-8, .0 ] 
@@ -100,12 +106,12 @@ def cross_section_Bosch( T_ion, reaction='DT' ):
         sigma_T_b = cross_section_Bosch( T_ion, reaction='DT_b' )
         return sigma_T_a + sigma_T_b
     elif reaction == 'DD_a':
-        # energy range: .5 - 5000 keV
+        energy_range = np.array( [ .5, 5000] )
         B_G = 31.3970   # sqrt(keV)
         A   = [ 5.5576e4, 2.1054e2, -3.2638e-2, 1.4987e-6, 1.8181e-10 ]
         B   = [ .0, .0, .0, .0 ]
     elif reaction == 'DD_b':
-        # energy range: .5 - 4900 keV
+        energy_range = np.array( [ .5, 4900] )
         B_G = 31.3970   # sqrt(keV)
         A   = [ 5.3701e4, 3.3027e2, -1.2706e-1, 2.9327e-5, -2.5151e-9 ]
         B   = [ .0, .0, .0, .0 ]
@@ -116,9 +122,16 @@ def cross_section_Bosch( T_ion, reaction='DT' ):
             (1.  + T*(B[0] + T*(B[1] + T*(B[2] + T*B[3]))))
             )
 
+    # cross section in mbarn
     sigma_T = S_func(T) / (T*np.exp(B_G/np.sqrt(T)))
 
-    return sigma_T
+    # set values outside of valid energy range to NaN
+    sigma_T[ T < energy_range[0] ] = np.nan
+    sigma_T[ T > energy_range[1] ] = np.nan
+
+    # return cross-section in barn
+    return sigma_T*1e-3
+
 #;}}}
 
 #%%
@@ -134,15 +147,28 @@ def main():
     """
     Plot the total cross section in m^2 for various species vs incident energy in keV
     """
-    E = np.logspace(0, 3, 501)
-    barns_to_SI = 1e-24 * 1e-4 # in m^2
 
-    sigma_DD    = barns_to_SI*(cross_section_NRL(E, 'DD_a') + cross_section_NRL(E, 'DD_b'))
-    sigma_DT    = barns_to_SI*cross_section_NRL(E, 'DT')
-    sigma_DHe3  = barns_to_SI*cross_section_NRL(E, 'DHe3')
+    dataset = 'Bosch'
+
+    # ion temperature in units of keV 
+    # (actually energy, but in plasma physics we just call it temperature :-)
+    T_ion = np.logspace(0, 3, 501)
+
+    # 1 barn = 1e-24 cm^2 = 1e-28 m^2
+    barns_to_SI = 1e-28
+
+    # get cross section
+    if dataset == 'NRL':
+        sigma_DD    = barns_to_SI*(cross_section_NRL(T_ion, 'DD_a') + cross_section_NRL(T_ion, 'DD_b'))
+        sigma_DT    = barns_to_SI*cross_section_NRL(T_ion, 'DT')
+        sigma_DHe3  = barns_to_SI*cross_section_NRL(T_ion, 'DHe3')
+    elif dataset == 'Bosch':
+        sigma_DD    = barns_to_SI*(cross_section_Bosch(T_ion, 'DD_a') + cross_section_NRL(T_ion, 'DD_b'))
+        sigma_DT    = barns_to_SI*cross_section_Bosch(T_ion, 'DT')
+        sigma_DHe3  = barns_to_SI*cross_section_Bosch(T_ion, 'DHe3')
 
     fig, ax1 = plt.subplots()
-    ax1.loglog(E, sigma_DD, E, sigma_DT, E, sigma_DHe3, lw=3)
+    ax1.loglog(T_ion, sigma_DD, T_ion, sigma_DT, T_ion, sigma_DHe3, lw=3)
 
     ax1.set_ylim([1e-32, 2e-27])
     ax1.set_xlim(1,1e3)
@@ -162,7 +188,7 @@ def main():
 
     ax1.grid(True, which='both')
     ax1.set_xlabel('Deuteron Energy [keV]', fontsize=16)
-    ax1.set_ylabel('Cross section $\sigma$ [$m^2$]', fontsize=16)
+    ax1.set_ylabel('Cross section $\sigma$ [$\mathrm{m}^2$]', fontsize=16)
     ax1.legend(('D-D', 'D-T', 'D-He$^3$'), loc='best', fontsize=18)
     ax2.set_xlabel('$T$ [million K]', fontsize=16)
 
@@ -172,7 +198,7 @@ def main():
 
     fig.tight_layout()
     # fig.text( .71, .98, credit_str, fontsize=7)
-    fig.savefig('cross_sections_vs_temperature.png', dpi=300)
+    fig.savefig('cross_sections_vs_temperature__{0}.png'.format(dataset), dpi=300)
 #;}}}
 
 
@@ -188,6 +214,6 @@ def main_test():
 #               T_ion[ii], cross_section_Bosch( T_ion[ii], reaction='DD_b' ) ) )
 
 if __name__ == '__main__':
-    #main()
-    main_test()
+    main()
+    #main_test()
 

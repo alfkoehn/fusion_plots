@@ -220,7 +220,7 @@ def main():
     ax2.tick_params(axis='both', which='both', direction='in', top=True,  right=False)
 
     # fig.text( .71, .98, credit_str, fontsize=7)
-    make_plot( fname_plot='cross_sections_vs_temperature__2.png' )
+    make_plot( fname_plot='cross_sections_vs_temperature__{0}.png'.format(dataset) )
 #;}}}
 
 

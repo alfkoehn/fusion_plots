@@ -21,6 +21,14 @@ from scipy.interpolate import interp1d
 def reaction_int2str( reaction_int, silent=True ):
 #;{{{
     """
+    Translate reaction number to reaction string.
+
+    The idea of this functions is to ensure that in all function within
+    this file the same reaction is meant when referring to reaction 3
+    (or any other number).
+
+    The integer provided to this function is tranlated into a string
+    specifying the reaction:
         1: D + T     --> n + 4He     T(d,n)4He
         2: D + D     --> p + T       D(d,p)T
         3: D + D     --> n + 3He     D(d,n)3He
@@ -31,6 +39,16 @@ def reaction_int2str( reaction_int, silent=True ):
                          p + 4He + n     4 %
         7: 3He + 3He --> p + p + 4He 
         8: p + 11B   --> 4He + 4He + 4He
+
+    Parameters
+    ----------
+    reaction_int: int
+        possible values see above
+
+    Returns
+    -------
+    reaction_str: str
+        possible values see the dictionary values
     """
 
     func_name = 'reaction_int'
@@ -51,6 +69,10 @@ def reaction_int2str( reaction_int, silent=True ):
         reaction_str = 'NaN'
         print( '{0}: ERROR, no reaction for found for provided key'.format( func_name ) )
         print( '{0}  key was {1}'.format( ' '*len(func_name), reaction_int ) )
+
+    if not silent:
+        print ('{0}: reaction_int = {1:d}, reaction_str = {2}'.format(
+                func_name, reaction_int, reaction_str))
 
     return reaction_str
 

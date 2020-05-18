@@ -327,10 +327,40 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, extrapolate=True, silent=Tru
 #;}}}
 
 
+def log_interp1d(xVals, yVals, kind='linear'):
+#;{{{
+    """
+    Wrapper around scipy.interpolate.interp1 for logarithmic datasets.
+
+    Parameters
+    ----------
+    xVals: np.array
+    yVals: np.array
+
+    Returns
+    -------
+    log_interp: function 
+    """
+
+    logx = np.log10(xVals)
+    logy = np.log10(yVals)
+
+    # interpolate a 1D function to log10 of input-data
+    f_interp_lin = interp.interp1d( logx, logy, kind=kind )
+
+    # transform log back to linear scale
+    f_interp_log = lambda x_new: np.power(10., f_interp_lin(np.log10(x_new)) )
+
+    return f_interp_log
+#;}}}
+
+
 def get_fusion_reactivity_McNally( T_ion, reaction=1, extrapolate=True, silent=True ):
 #;{{{
     '''
-    fusion reactivity from tabular values (including interpolations to experimental values)
+    Return the fusion reactivity for various fusion reactions.
+
+    Fusion reactivity from tabular values (including interpolations to experimental values)
     Ref: J. Rand McNally, Fusion Reactivity Graphs and Tables for
          Charged Particle Reactions, ORNL/TM-6914, 1979
          https://doi.org/10.2172/5992170
@@ -356,6 +386,13 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, extrapolate=True, silent=T
     func_name = 'get_fusion_reactivity_McNally'
 
     reaction_str = reaction_int2str( reaction, silent=silent )
+
+    if not silent:
+        print( '{0}:'.format(func_name) )
+        print( '    fusion reactivity as obtained from the following paper:' )
+        print( '    J. Rand McNally, ORNL/TM-6914 (1979)')
+        print( '    (more info in doc-string)' )
+        print( '    reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
 
     T_ion_tabulated = np.array( [  1, 2, 3, 4, 5, 6, 7, 8, 9
                                  ,10, 20, 30, 40, 50, 60, 70, 80, 90
@@ -429,7 +466,8 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, extrapolate=True, silent=T
             ] )
 
     # perform PCHIP 1D monotonic cubic interpolation
-    f_interp_sigmav = interp.PchipInterpolator( T_ion_tabulated, sigma_v )
+    #f_interp_sigmav = interp.PchipInterpolator( T_ion_tabulated, sigma_v )
+    f_interp_sigmav = log_interp1d(T_ion_tabulated, sigma_v, kind='linear')
     sigma_v         = f_interp_sigmav( T_ion )
 
     # check if T_ion is within valid energy range
@@ -584,6 +622,6 @@ def debug():
 
 
 if __name__ == '__main__':
-    debug()
-#    main()
+#    debug()
+    main()
 

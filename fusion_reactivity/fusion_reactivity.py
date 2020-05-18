@@ -327,15 +327,33 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, extrapolate=True, silent=Tru
 #;}}}
 
 
-#def get_fusion_reactivity_4( reaction ):
-def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
+def get_fusion_reactivity_McNally( T_ion, reaction=1, extrapolate=True, silent=True ):
 #;{{{
     '''
     fusion reactivity from tabular values (including interpolations to experimental values)
     Ref: J. Rand McNally, Fusion Reactivity Graphs and Tables for
          Charged Particle Reactions, ORNL/TM-6914, 1979
          https://doi.org/10.2172/5992170
+    
+    Parameters
+    ----------
+    T_ion: float
+        ion temperature in keV, valid range 1-1000 keV
+    reaction: int
+        defines reaction considered, default value is 1
+    extrapolate: bool
+        if True, T_ion outside of valid energy range (according to paper)
+        will be extrapolated; if false those values will be set to NaN
+    silent: bool
+        if True, some (useful ?) output will be printed to console
+
+    Returns
+    -------
+    float
+        fusion reactivity in m^3/s
     '''
+
+    func_name = 'get_fusion_reactivity_McNally'
 
     reaction_str = reaction_int2str( reaction, silent=silent )
 
@@ -344,6 +362,8 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
                                  ,100, 200, 300, 400, 500, 600, 700, 800, 900
                                  ,1000
                                 ] )
+
+    energy_range = np.array( [ np.amin(T_ion_tabulated), np.amax(T_ion_tabulated) ] )
 
     if reaction_str == 'DD_b':       
         # Table I (page 9, top)
@@ -411,6 +431,24 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
     # perform PCHIP 1D monotonic cubic interpolation
     f_interp_sigmav = interp.PchipInterpolator( T_ion_tabulated, sigma_v )
     sigma_v         = f_interp_sigmav( T_ion )
+
+    # check if T_ion is within valid energy range
+    if (np.amin(T_ion) < energy_range[0]) or (np.amax(T_ion) > energy_range[1]):
+        print( '{0}:'.format(func_name) )
+        print( '    WARNING: T_ion is outside of valid energy range' )
+        if extrapolate:
+            print( '{0}extrapolate was set to True (data will be extrapolated)'.format( 
+                   ' '*13) )
+        else:
+            print( '{0}extrapolate was set to False (data will be set to NaN)'.format( 
+                   ' '*13) )
+
+            # if T_ion is array, set all values outside of range to NaN
+            if np.size(T_ion) > 1:
+                sigma_v[ T_ion < energy_range[0] ] = np.nan
+                sigma_v[ T_ion > energy_range[1] ] = np.nan
+            else:
+                sigma_v = np.nan
 
     return sigma_v
 

@@ -356,71 +356,18 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
     # interpolate tabulated values
     #interp_T        = np.linspace(1,1000,1000)
     #interp_sigmav   = np.interp( interp_T, T_ion_tabulated, sigma_v )
+    # look for nearest value in interpolated data
+#    val_id  = (np.abs(interp_T - T_ion)).argmin()
+#    sigma_v = interp_sigmav[val_id]
 
     # perform PCHIP 1D monotonic cubic interpolation
     f_interp_sigmav = interp.PchipInterpolator( T_ion_tabulated, sigma_v )
     sigma_v         = f_interp_sigmav( T_ion )
 
-    # look for nearest value in interpolated data
-#    val_id  = (np.abs(interp_T - T_ion)).argmin()
-#    sigma_v = interp_sigmav[val_id]
-
     return sigma_v
 
     #return np.array( [ T_ion_tabulated, sigma_v ] )
 
-#;}}}
-
-
-def get_fusion_reactivity( T_ion, reaction=1, dataset='' ):
-#;{{{
-    """
-
-    reaction: int
-        1: T + D    --> n + 4He     T(d,n)4He
-        2: D + D    --> p + T       D(d,p)T
-        3: D + D    --> n + 3He     D(d,n)3He
-        4: 3He + D  --> p + 4He     3He(d,p)4He
-        5: T + T    --> n + 4He     T(t,n)4He (NOTE: no fit formula)
-        6: T + 3He  --> D+alpha  OR  p+alpha+n  OR  p+alpha+n
-        7: 3He+3He  --> p+p+alpha
-        8: p + 11B  --> 4He + 4He + 4He
-
-    """
-    
-    print
-
-#;}}}
-
-
-def get_fusion_cross_section_2( reaction, ion_temperature ):
-#;{{{
-
-    if reaction == 1:
-        a1 = -34.629731
-        a2 = -.57164663
-        a3 = 64.221524
-        a4 = 2.1373239
-    elif reaction == 2:
-        a1 = -37.061587
-        a2 = -3.4503954e-5
-        a3 = 3.0774327e5
-        a4 = 5.0816753
-    elif reaction == 3:
-        a1 = -36.799066
-        a2 = -1.0041572e-5
-        a3 = 7.4173511e5
-        a4 = 5.4366402
-    elif reaction == 4:
-        a1 = -35.235392
-        a2 = -.15172469
-        a3 = 802.58671
-        a4 = 2.6497885
-
-    T= ion_temperature
-    sigma_v = np.exp( a1 + a2 * abs(np.log(T/a3))**a4 ) *  1e-6
-
-    return sigma_v
 #;}}}
 
 
@@ -450,11 +397,6 @@ def main():
     sigma_v2 = get_fusion_reactivity_Hively( 2, T )
     sigma_v3 = get_fusion_reactivity_Hively( 3, T )
     sigma_v4 = get_fusion_reactivity_Hively( 4, T )
-
-    sigma_2_v1 = get_fusion_cross_section_2( 1, T )
-    sigma_2_v2 = get_fusion_cross_section_2( 2, T )
-    sigma_2_v3 = get_fusion_cross_section_2( 3, T )
-    sigma_2_v4 = get_fusion_cross_section_2( 4, T )
 
     sigma_3_v1 = get_fusion_reactivity_Bosch( 1, T )
     sigma_3_v2 = get_fusion_reactivity_Bosch( 2, T )

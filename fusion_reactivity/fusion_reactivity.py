@@ -18,8 +18,47 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
 
+def reaction_int2str( reaction_int, silent=True ):
+#;{{{
+    """
+        1: D + T     --> n + 4He     T(d,n)4He
+        2: D + D     --> p + T       D(d,p)T
+        3: D + D     --> n + 3He     D(d,n)3He
+        4: 3He + D   --> p + 4He     3He(d,p)4He
+        5:            =  T+T -> 4He + n + n
+        6: T + 3He   --> D + 4He         41 %
+                         p + 4He + n     55 %
+                         p + 4He + n     4 %
+        7: 3He + 3He --> p + p + 4He 
+        8: p + 11B   --> 4He + 4He + 4He
+    """
+
+    func_name = 'reaction_int'
+
+    reaction_dict = { 1 : 'DT'  , 
+                      2 : 'DD_a',
+                      3 : 'DD_b',
+                      4 : '3HeD',
+                      5 : 'TT',
+                      6 : 'T3He',
+                      7 : '3He3He',
+                      8 : 'p11B',
+                     }
+
+    if reaction_int in reaction_dict.keys():
+        reaction_str = reaction_dict[ reaction_int ]
+    else:
+        reaction_str = 'NaN'
+        print( '{0}: ERROR, no reaction for found for provided key'.format( func_name ) )
+        print( '{0}  key was {1}'.format( ' '*len(func_name), reaction_int ) )
+
+    return reaction_str
+
+#;}}}
+
+
+
 #def get_fusion_cross_section_1( reaction, T_ion ):
-#def get_Hively_values( T_ion, reaction=1, silent=True ):
 def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True ):
 #;{{{
     '''
@@ -107,7 +146,7 @@ def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True ):
 
 
 #def get_fusion_reactivity_3( reaction, T_ion ):
-def get_Bosch_values( T_ion, reaction=1, silent=True ):
+def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
 #;{{{
 
     '''
@@ -206,7 +245,8 @@ def get_Bosch_values( T_ion, reaction=1, silent=True ):
 
 
 #def get_fusion_reactivity_4( reaction ):
-def get_McNally_values( reaction=1, silent=True ):
+#def get_McNally_values( reaction=1, silent=True ):
+def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
 #;{{{
     '''
     fusion reactivity from tabular values (including interpolations to experimental values)
@@ -286,6 +326,9 @@ def get_McNally_values( reaction=1, silent=True ):
             , 7.15115e-24, 1.26619e-23, 2.01130e-23, 2.93569e-23, 4.00945e-23, 1.62612e-22, 2.39482e-22
             , 2.79706e-22, 3.03366e-22, 3.19657e-22, 3.32697e-22, 3.44191e-22, 3.54833e-22, 3.64859e-22
             ] )
+
+    #sigma_4_v1_interp_x = np.linspace(1,1000,1000)
+    #sigma_4_v1_interp_y = np.interp( sigma_4_v1_interp_x, sigma_4_v1[0,:], sigma_4_v1[1,:] )
 
     #return np.array( [ T_ion ] + [ sigma_v ] )
     return np.array( [ T_ion, sigma_v ] )
@@ -377,10 +420,10 @@ sigma_2_v2 = get_fusion_cross_section_2( 2, T )
 sigma_2_v3 = get_fusion_cross_section_2( 3, T )
 sigma_2_v4 = get_fusion_cross_section_2( 4, T )
 
-sigma_3_v1 = get_fusion_reactivity_3( 1, T )
-sigma_3_v2 = get_fusion_reactivity_3( 2, T )
-sigma_3_v3 = get_fusion_reactivity_3( 3, T )
-sigma_3_v4 = get_fusion_reactivity_3( 4, T )
+sigma_3_v1 = get_fusion_reactivity_Bosch( 1, T )
+sigma_3_v2 = get_fusion_reactivity_Bosch( 2, T )
+sigma_3_v3 = get_fusion_reactivity_Bosch( 3, T )
+sigma_3_v4 = get_fusion_reactivity_Bosch( 4, T )
 
 sigma_4_v1 = get_fusion_reactivity_4( 1 )
 sigma_4_v2 = get_fusion_reactivity_4( 2 )

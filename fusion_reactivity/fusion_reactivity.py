@@ -20,6 +20,32 @@ import scipy.interpolate as interp
 plt.rcParams.update( {'font.size':12} )
 
 
+def make_plot( fname_plot='' ):
+#;{{{
+    '''
+    Output a plot, either to X-window (default) or into file. 
+
+    Parameters
+    ----------
+    fname_plot: str
+        if empty, plot will be output into X-window
+
+    Returns
+    -------
+    '''
+
+
+    if len(fname_plot) > 0:
+        plt.savefig( fname_plot, dpi=600, bbox_inches='tight' )
+        #fig.tight_layout()
+        #fig.savefig( fname_plot, dpi=600 )
+        print( 'written plot into file {0}'.format(fname_plot) )
+    else:
+        plt.show()
+
+#;}}}
+
+
 def reaction_int2str( reaction_int, silent=True ):
 #;{{{
     """
@@ -500,11 +526,21 @@ def main():
 
     print
 
+    # set-up plot
+    # (width, heigth) in inches
+    fig1 = plt.figure( figsize=(8,6) )
+    ax1  = fig1.add_subplot( 1,1,1 )
+   
+    # if empty, plot will be put out to X-window
+    plot_fname = 'fusion_reactivity.png'
+
+    # set fusion reaction, see function reaction_int2str
     reaction = 1
 
     # T_ion in keV
     T_ion = np.linspace(1,100,1000)
 
+    # get fusion reactivity values
     sigma_v1_Hively = get_fusion_reactivity_Hively( T_ion, reaction=1 )
     sigma_v2_Hively = get_fusion_reactivity_Hively( T_ion, reaction=2 )
     sigma_v3_Hively = get_fusion_reactivity_Hively( T_ion, reaction=3 )
@@ -530,11 +566,6 @@ def main():
 
     write_datasource2plot   = True
     write_plotcredit        = True
-
-    # set-up plot
-    # (width, heigth) in inches
-    fig1 = plt.figure( figsize=(8,6) )
-    ax1  = fig1.add_subplot( 1,1,1 )
 
     if plot_Hively:
         ax1.plot( T_ion, sigma_v1_Hively, label='T(d,n)4He', linewidth=2 )
@@ -595,13 +626,12 @@ def main():
         credit_str = u'{0}, CC BY-SA 4.0'.format( __author__ )
         fig1.text( .7, .885, credit_str, fontsize=7 )
 
-    plt.show()
-
+    make_plot( plot_fname )
 
 #;}}}
 
 
-def debug():
+def test():
 #;{{{
 
     print( 'debug' )
@@ -622,6 +652,6 @@ def debug():
 
 
 if __name__ == '__main__':
-#    debug()
+#    test()
     main()
 

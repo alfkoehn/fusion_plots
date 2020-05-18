@@ -82,7 +82,7 @@ def reaction_int2str( reaction_int, silent=True ):
 #;}}}
 
 
-def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True, extrapolate=True ):
+def get_fusion_reactivity_Hively( T_ion, reaction=1, extrapolate=True, silent=True ):
 #;{{{
     '''
     Return the fusion reactivity for various fusion reactions. 
@@ -108,6 +108,9 @@ def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True, extrapolate=Tr
         2: D + D    --> p + T       D(d,p)T
         3: D + D    --> n + 3He     D(d,n)3He
         4: 3He + D  --> p + 4He     3He(d,p)4He
+    extrapolate: bool
+        if True, T_ion outside of valid energy range (according to paper)
+        will be extrapolated; if false those values will be set to NaN
     silent: bool
         if True, some (useful ?) output will be printed to console
 
@@ -197,7 +200,7 @@ def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True, extrapolate=Tr
 #;}}}
 
 
-def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
+def get_fusion_reactivity_Bosch( T_ion, reaction=1, extrapolate=True, silent=True ):
 #;{{{
 
     '''
@@ -218,6 +221,9 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
         2: D + D    --> p + T       D(d,p)T
         3: D + D    --> n + 3He     D(d,n)3He
         4: 3He + D  --> p + 4He     3He(d,p)4He
+    extrapolate: bool
+        if True, T_ion outside of valid energy range (according to paper)
+        will be extrapolated; if false those values will be set to NaN
     silent: bool
         if True, some (useful ?) output will be printed to console
 
@@ -227,14 +233,19 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
         fusion reactivity in m^3/s
     '''
 
+    func_name = 'get_fusion_reactivity_Bosch'
+
     reaction_str = reaction_int2str( reaction, silent=silent )
 
+    # valid energy range according to paper
+    energy_range = [.2, 100]
+
     if not silent:
-        print( 'get_Bosch_values:' )
-        print( '  fusion reactivity as obtained from the following paper:' )
-        print( '  H.-S. Bosch and G.M. Hale, Nuclear Fusion, Vol. 32, No. 4 (1992)')
-        print( '  (more info in doc-string)' )
-        print( '  reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
+        print( '{0}:'.format(func_name) )
+        print( '    fusion reactivity as obtained from the following paper:' )
+        print( '    H.-S. Bosch and G.M. Hale, Nuclear Fusion, Vol. 32, No. 4 (1992)')
+        print( '    (more info in doc-string)' )
+        print( '    reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
 
     if reaction_str == 'DT' or reaction_str == 'TD':
         b_G     = 34.3827
@@ -292,7 +303,25 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
     sigma_v *= 1e-6
 
     if not silent:
-        print( '  ==> <sigma*v> = {0} m^3/s'.format(sigma_v) )
+        print( '    ==> <sigma*v> = {0} m^3/s'.format(sigma_v) )
+
+    # check if T_ion is within valid energy range
+    if (np.amin(T_ion) < energy_range[0]) or (np.amax(T_ion) > energy_range[1]):
+        print( '{0}:'.format(func_name) )
+        print( '    WARNING: T_ion is outside of valid energy range' )
+        if extrapolate:
+            print( '{0}extrapolate was set to True (data will be extrapolated)'.format( 
+                   ' '*13) )
+        else:
+            print( '{0}extrapolate was set to False (data will be set to NaN)'.format( 
+                   ' '*13) )
+
+            # if T_ion is array, set all values outside of range to NaN
+            if np.size(T_ion) > 1:
+                sigma_v[ T_ion < energy_range[0] ] = np.nan
+                sigma_v[ T_ion > energy_range[1] ] = np.nan
+            else:
+                sigma_v = np.nan
 
     return sigma_v
 #;}}}
@@ -505,10 +534,10 @@ def debug():
     reaction_str = reaction_int2str( reaction_int, silent=False )
     print( 'reaction = {0}, {1}'.format( reaction_int, reaction_str ) )
 
-    T_ion   = .5
+    T_ion   = .1
 
     sigma_v_Hively = get_fusion_reactivity_Hively( T_ion, reaction=reaction_int, silent=False, extrapolate=False )
-    sigma_v_Bosch  = get_fusion_reactivity_Bosch( T_ion, reaction=reaction_int, silent=False )
+    sigma_v_Bosch  = get_fusion_reactivity_Bosch( T_ion, reaction=reaction_int, silent=False, extrapolate=True )
     sigma_v_McNally= get_fusion_reactivity_McNally( T_ion, reaction=1, silent=False )
 
     print( 'T_ion = {0} keV, sigma_v_Hively = {1:e}, sigma_v_Bosch = {2:e}, sigma_v_McNally = {3:e}'.format(

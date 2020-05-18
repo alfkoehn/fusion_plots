@@ -1,7 +1,7 @@
 # coding=utf-8
 
 """
-Plot the fusion reactivity <sigma*v> as a function of T for various fusion reactios.
+Plot the fusion reactivity <sigma*v> as a function of T_ion for various fusion reactios.
 
 Simply run this script to produce a png plot:
     $ python fusion_reactivity.py
@@ -16,7 +16,8 @@ __license__     = 'MIT'
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.interpolate as interp
-from scipy.interpolate import interp1d
+
+plt.rcParams.update( {'font.size':12} )
 
 
 def reaction_int2str( reaction_int, silent=True ):
@@ -34,7 +35,7 @@ def reaction_int2str( reaction_int, silent=True ):
         2: D + D     --> p + T       D(d,p)T
         3: D + D     --> n + 3He     D(d,n)3He
         4: 3He + D   --> p + 4He     3He(d,p)4He
-        5:            =  T+T -> 4He + n + n
+        5: T + T     --> 4He + n + n
         6: T + 3He   --> D + 4He         41 %
                          p + 4He + n     55 %
                          p + 4He + n     4 %
@@ -64,6 +65,7 @@ def reaction_int2str( reaction_int, silent=True ):
                       8 : 'p11B',
                      }
 
+    # check if reaction_int is in keys of dict, return NaN if not
     if reaction_int in reaction_dict.keys():
         reaction_str = reaction_dict[ reaction_int ]
     else:
@@ -80,7 +82,7 @@ def reaction_int2str( reaction_int, silent=True ):
 #;}}}
 
 
-def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True ):
+def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True, extrapolate=True ):
 #;{{{
     '''
     Return the fusion reactivity for various fusion reactions. 
@@ -98,7 +100,7 @@ def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True ):
     Parameters
     ----------
     T_ion: float
-        ion temperature in keV, valid range 0.2-100 keV
+        ion temperature in keV, valid range 1-80 keV
     reaction: int
         defines reaction considered, default value is 1
         possible values are:
@@ -115,14 +117,19 @@ def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True ):
         fusion reactivity in m^3/s
     '''
 
+    func_name = 'get_fusion_reactivity_Hively'
+
     reaction_str = reaction_int2str( reaction, silent=True )
 
+    # valid energy range according to paper
+    energy_range = [1, 80]
+
     if not silent:
-        print( 'get_Hively_values:' )
-        print( '  fusion reactivity as obtained from the following paper:' )
-        print( '  L.M. Hively, Nuclear Fusion, Vol. 17, No. 4 (1977)' )
-        print( '  (more info in doc-string)' )
-        print( '  reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
+        print( '{0}:'.format(func_name) )
+        print( '    fusion reactivity as obtained from the following paper:' )
+        print( '    L.M. Hively, Nuclear Fusion, Vol. 17, No. 4 (1977)' )
+        print( '    (more info in doc-string)' )
+        print( '    reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
 
     # set the coefficients of the fit equation
     if reaction_str == 'DT' or reaction_str == 'TD':             
@@ -166,7 +173,25 @@ def get_fusion_reactivity_Hively( T_ion, reaction=1, silent=True ):
     sigma_v = 1e-6 * np.exp( a1/T_ion**r + a2 + a3*T_ion + a4*T_ion**2 + a5*T_ion**3 + a6*T_ion**4 )
 
     if not silent:
-        print( '  ==> <sigma*v> = {0} m^3/s'.format(sigma_v) )
+        print( '    ==> <sigma*v> = {0} m^3/s'.format(sigma_v) )
+
+    # check if T_ion is within valid energy range
+    if (np.amin(T_ion) < energy_range[0]) or (np.amax(T_ion) > energy_range[1]):
+        print( '{0}:'.format(func_name) )
+        print( '    WARNING: T_ion is outside of valid energy range' )
+        if extrapolate:
+            print( '{0}extrapolate was set to True (data will be extrapolated)'.format( 
+                   ' '*13) )
+        else:
+            print( '{0}extrapolate was set to False (data will be set to NaN)'.format( 
+                   ' '*13) )
+
+            # if T_ion is array, set all values outside of range to NaN
+            if np.size(T_ion) > 1:
+                sigma_v[ T_ion < energy_range[0] ] = np.nan
+                sigma_v[ T_ion > energy_range[1] ] = np.nan
+            else:
+                sigma_v = np.nan
 
     return sigma_v
 #;}}}
@@ -354,13 +379,6 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
             , 2.79706e-22, 3.03366e-22, 3.19657e-22, 3.32697e-22, 3.44191e-22, 3.54833e-22, 3.64859e-22
             ] )
 
-    # interpolate tabulated values
-    #interp_T        = np.linspace(1,1000,1000)
-    #interp_sigmav   = np.interp( interp_T, T_ion_tabulated, sigma_v )
-    # look for nearest value in interpolated data
-#    val_id  = (np.abs(interp_T - T_ion)).argmin()
-#    sigma_v = interp_sigmav[val_id]
-
     # perform PCHIP 1D monotonic cubic interpolation
     f_interp_sigmav = interp.PchipInterpolator( T_ion_tabulated, sigma_v )
     sigma_v         = f_interp_sigmav( T_ion )
@@ -377,15 +395,11 @@ def main():
 
     print
 
-
-    ##############################################
     reaction = 1
 
-    # T in keV
-    # curve fitting range in Hively NF1977 paper was T=1...80 keV
-    T_ion = np.linspace(1,100,100)
-    #T = np.linspace(1,150,1000)
-    #T = np.linspace(1,1000,1000)
+    # T_ion in keV
+    T_ion = np.linspace(1,100,1000)
+
     sigma_v1_Hively = get_fusion_reactivity_Hively( T_ion, reaction=1 )
     sigma_v2_Hively = get_fusion_reactivity_Hively( T_ion, reaction=2 )
     sigma_v3_Hively = get_fusion_reactivity_Hively( T_ion, reaction=3 )
@@ -405,28 +419,35 @@ def main():
     sigma_v7_McNally = get_fusion_reactivity_McNally( T_ion, reaction=7 )
     sigma_v8_McNally = get_fusion_reactivity_McNally( T_ion, reaction=8 )
 
-    plot_1 = 0
-    plot_Bosch_reactivity = 0
-    plot_exp_data_old = 1
+    plot_Hively     = False
+    plot_Bosch      = False
+    plot_McNally    = True
+
+    write_datasource2plot   = True
+    write_plotcredit        = True
 
     # set-up plot
     # (width, heigth) in inches
     fig1 = plt.figure( figsize=(8,6) )
     ax1  = fig1.add_subplot( 1,1,1 )
 
-    if plot_1 == 1:
+    if plot_Hively:
         ax1.plot( T_ion, sigma_v1_Hively, label='T(d,n)4He', linewidth=2 )
         ax1.plot( T_ion, sigma_v2_Hively, label='D(d,p)T', linewidth=2 )
         ax1.plot( T_ion, sigma_v3_Hively, label='D(d,n)3He', linewidth=2 )
         ax1.plot( T_ion, sigma_v4_Hively, label='3He(d,p)4He', linewidth=2 )
 
-    if plot_Bosch_reactivity == 1:
+        txt_ref_str = 'Hively fit'
+
+    if plot_Bosch:
         ax1.plot( T_ion, sigma_v1_Bosch, label='T(d,n)4He', linewidth=3 )
         ax1.plot( T_ion, sigma_v2_Bosch, label='D(d,p)T', linewidth=3 )
         ax1.plot( T_ion, sigma_v3_Bosch, label='D(d,n)3He', linewidth=3 )
         ax1.plot( T_ion, sigma_v4_Bosch, label='3He(d,p)4He', linewidth=3 )
 
-    if plot_exp_data_old:
+        txt_ref_str = 'Bosch fit'
+
+    if plot_McNally:
         lw_McNally = 3
         ax1.plot( T_ion, sigma_v1_McNally, label='D+T', linewidth=lw_McNally )
         ax1.plot( T_ion, sigma_v2_McNally+sigma_v3_McNally, label='D+D', linewidth=lw_McNally )
@@ -435,7 +456,14 @@ def main():
         ax1.plot( T_ion, sigma_v7_McNally, label=r'$^3$He+$^3$He', linewidth=lw_McNally )
         ax1.plot( T_ion, sigma_v8_McNally, label=r'p+$^{11}$B', linewidth=lw_McNally )
 
+        txt_ref_str = 'McNally dataset'
 
+    if write_datasource2plot:
+        txt_ref_x0 = .75
+        txt_ref_y0 = .84
+        fig1.text( txt_ref_x0, txt_ref_y0, txt_ref_str, fontsize=10 )
+
+    ax1.set_xlim( np.amin(T_ion), np.amax(T_ion) )
     ax1.set_ylim( [1e-26, 1e-20] )
     ax1.set_xscale('log')
     ax1.set_yscale('log')
@@ -450,12 +478,26 @@ def main():
 
     legend = ax1.legend( loc='best', fontsize=15 )
     legend.get_frame().set_alpha(0.5)
+
+    # per default, write credits into plot, to ensure that people know they can use the plot
+    # every plot appearing somewhere on the internet should contain information on how to 
+    # use it, otherwise it is useless in terms of re-usability
+    # you probably want to remove it when you make your own plot
+    # (attribution would still be gratefully acknowledged :)
+    # also note that the license refers only to that specific plot
+    # the license for the code is mentioned above and in the LICENSE file
+    if write_plotcredit:
+        credit_str = u'{0}, CC BY-SA 4.0'.format( __author__ )
+        fig1.text( .7, .885, credit_str, fontsize=7 )
+
     plt.show()
 
 
 #;}}}
 
+
 def debug():
+#;{{{
 
     print( 'debug' )
 
@@ -463,16 +505,18 @@ def debug():
     reaction_str = reaction_int2str( reaction_int, silent=False )
     print( 'reaction = {0}, {1}'.format( reaction_int, reaction_str ) )
 
-    T_ion   = 5.
+    T_ion   = .5
 
-    sigma_v_Hively = get_fusion_reactivity_Hively( T_ion, reaction=reaction_int, silent=False )
+    sigma_v_Hively = get_fusion_reactivity_Hively( T_ion, reaction=reaction_int, silent=False, extrapolate=False )
     sigma_v_Bosch  = get_fusion_reactivity_Bosch( T_ion, reaction=reaction_int, silent=False )
     sigma_v_McNally= get_fusion_reactivity_McNally( T_ion, reaction=1, silent=False )
 
     print( 'T_ion = {0} keV, sigma_v_Hively = {1:e}, sigma_v_Bosch = {2:e}, sigma_v_McNally = {3:e}'.format(
             T_ion, sigma_v_Hively, sigma_v_Bosch, sigma_v_McNally) )
+#;}}}
+
 
 if __name__ == '__main__':
-#    debug()
-    main()
+    debug()
+#    main()
 

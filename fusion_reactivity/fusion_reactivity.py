@@ -201,14 +201,16 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
         fusion reactivity in m^3/s
     '''
 
+    reaction_str = reaction_int2str( reaction, silent=silent )
+
     if not silent:
         print( 'get_Bosch_values:' )
         print( '  fusion reactivity as obtained from the following paper:' )
         print( '  H.-S. Bosch and G.M. Hale, Nuclear Fusion, Vol. 32, No. 4 (1992)')
         print( '  (more info in doc-string)' )
-        print( '  reaction {0:d}, T_ion = {1}'.format(reaction, T_ion) )
+        print( '  reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
 
-    if reaction == 1:
+    if reaction_str == 'DT' or reaction_str == 'TD':
         b_G     = 34.3827
         mr_c2   = 1124656.
         c1      = 1.17302e-9
@@ -219,7 +221,7 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
         c6      = -1.06750e-4
         c7      = 1.36600e-5
         c7      = .0
-    elif reaction == 2:
+    elif reaction_str == 'DD_a':
         b_G     = 31.3970
         mr_c2   = 937814.
         c1      = 5.65718e-12
@@ -229,7 +231,7 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
         c5      = 1.05060e-5
         c6      = .0
         c7      = .0
-    elif reaction == 3:
+    elif reaction_str == 'DD_b':
         b_G     = 31.3970
         mr_c2   = 937814.
         c1      = 5.43360e-12
@@ -239,7 +241,7 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
         c5      = -2.96400e-6
         c6      = .0
         c7      = .0
-    elif reaction == 4:
+    elif reaction_str == '3HeD' or reaction_str == 'D3He':
         b_G     = 68.7508
         mr_c2   = 1124572.
         c1      = 5.51036e-10
@@ -544,9 +546,12 @@ def debug():
     print( 'reaction = {0}, {1}'.format( reaction_int, reaction_str ) )
 
     T_ion   = 5.
-    sigma_v = get_fusion_reactivity_Hively( T_ion, reaction=reaction_int, silent=False )
 
-    print( 'T_ion = {0} keV, sigma_v = {1:e}'.format(T_ion, sigma_v) )
+    sigma_v_Hively = get_fusion_reactivity_Hively( T_ion, reaction=reaction_int, silent=False )
+    sigma_v_Bosch  = get_fusion_reactivity_Bosch( T_ion, reaction=reaction_int, silent=False )
+
+    print( 'T_ion = {0} keV, sigma_v_Hively = {1:e}, sigma_v_Bosch = {2:e}'.format(
+            T_ion, sigma_v_Hively, sigma_v_Bosch) )
 
 if __name__ == '__main__':
     debug()

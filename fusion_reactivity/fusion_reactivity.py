@@ -251,6 +251,7 @@ def get_fusion_reactivity_Bosch( T_ion, reaction=1, silent=True ):
         c4      = -1.91080e-5
         c5      = 1.35776e-4
         c6      = .0
+        c7      = .0
 
     # Eq. (13)
     theta = T_ion / ( 1. - T_ion*(c2+T_ion*(c4+T_ion*c6)) / (1.+T_ion*(c3+T_ion*(c5+T_ion*c7))) )
@@ -379,111 +380,75 @@ def main():
 
     ##############################################
     reaction = 1
-    # 1: T(d,n)4He
-    # 2: D(d,p)T
-    # 3: D(d,n)3He
-    # 4: 3He(d,p)4He
-    # 5: T(t,n)4He (NOTE: no fit formula)
-    # 6: T+3He --> D+alpha  OR  p+alpha+n  OR  p+alpha+n
-    # 7: 3He+3He --> p+p+alpha
-    # 8: p+11B --> alpha + alpha + alpha
 
     # T in keV
     # curve fitting range in Hively NF1977 paper was T=1...80 keV
-    T = np.linspace(1,100,100)
+    T_ion = np.linspace(1,100,100)
     #T = np.linspace(1,150,1000)
     #T = np.linspace(1,1000,1000)
-    sigma_v1 = get_fusion_reactivity_Hively( 1, T )
-    sigma_v2 = get_fusion_reactivity_Hively( 2, T )
-    sigma_v3 = get_fusion_reactivity_Hively( 3, T )
-    sigma_v4 = get_fusion_reactivity_Hively( 4, T )
+    sigma_v1_Hively = get_fusion_reactivity_Hively( T_ion, reaction=1 )
+    sigma_v2_Hively = get_fusion_reactivity_Hively( T_ion, reaction=2 )
+    sigma_v3_Hively = get_fusion_reactivity_Hively( T_ion, reaction=3 )
+    sigma_v4_Hively = get_fusion_reactivity_Hively( T_ion, reaction=4 )
 
-    sigma_3_v1 = get_fusion_reactivity_Bosch( 1, T )
-    sigma_3_v2 = get_fusion_reactivity_Bosch( 2, T )
-    sigma_3_v3 = get_fusion_reactivity_Bosch( 3, T )
-    sigma_3_v4 = get_fusion_reactivity_Bosch( 4, T )
+    sigma_v1_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=1 )
+    sigma_v2_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=2 )
+    sigma_v3_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=3 )
+    sigma_v4_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=4 )
 
-    sigma_4_v1 = get_fusion_reactivity_4( 1 )
-    sigma_4_v2 = get_fusion_reactivity_4( 2 )
-    sigma_4_v3 = get_fusion_reactivity_4( 3 )
-    sigma_4_v4 = get_fusion_reactivity_4( 4 )
-    sigma_4_v5 = get_fusion_reactivity_4( 5 )
-    sigma_4_v6 = get_fusion_reactivity_4( 6 )
-    sigma_4_v7 = get_fusion_reactivity_4( 7 )
-    sigma_4_v8 = get_fusion_reactivity_4( 8 )
-
-
-    #print sigma_v
+    sigma_v1_McNally = get_fusion_reactivity_McNally( T_ion, reaction=1 )
+    sigma_v2_McNally = get_fusion_reactivity_McNally( T_ion, reaction=2 )
+    sigma_v3_McNally = get_fusion_reactivity_McNally( T_ion, reaction=3 )
+    sigma_v4_McNally = get_fusion_reactivity_McNally( T_ion, reaction=4 )
+    sigma_v5_McNally = get_fusion_reactivity_McNally( T_ion, reaction=5 )
+    sigma_v6_McNally = get_fusion_reactivity_McNally( T_ion, reaction=6 )
+    sigma_v7_McNally = get_fusion_reactivity_McNally( T_ion, reaction=7 )
+    sigma_v8_McNally = get_fusion_reactivity_McNally( T_ion, reaction=8 )
 
     plot_1 = 0
-    plot_2 = 0
     plot_Bosch_reactivity = 0
     plot_exp_data_old = 1
 
-    if plot_1 == 1:
-        plt.plot( T, sigma_v1, label='T(d,n)4He', linewidth=2 )
-        plt.plot( T, sigma_v2, label='D(d,p)T', linewidth=2 )
-        plt.plot( T, sigma_v3, label='D(d,n)3He', linewidth=2 )
-        plt.plot( T, sigma_v4, label='3He(d,p)4He', linewidth=2 )
+    # set-up plot
+    # (width, heigth) in inches
+    fig1 = plt.figure( figsize=(8,6) )
+    ax1  = fig1.add_subplot( 1,1,1 )
 
-    # note. labels might be wrong...
-    if plot_2 == 1:
-        plt.plot( T, sigma_2_v1, label='2:T-4He', linewidth=2 )
-        plt.plot( T, sigma_2_v2, label='2:D-T', linewidth=2 )
-        plt.plot( T, sigma_2_v3, label='2:D-3He', linewidth=2 )
-        plt.plot( T, sigma_2_v4, label='2:3He-4He', linewidth=2 )
+    if plot_1 == 1:
+        ax1.plot( T_ion, sigma_v1_Hively, label='T(d,n)4He', linewidth=2 )
+        ax1.plot( T_ion, sigma_v2_Hively, label='D(d,p)T', linewidth=2 )
+        ax1.plot( T_ion, sigma_v3_Hively, label='D(d,n)3He', linewidth=2 )
+        ax1.plot( T_ion, sigma_v4_Hively, label='3He(d,p)4He', linewidth=2 )
 
     if plot_Bosch_reactivity == 1:
-        plt.plot( T, sigma_3_v1, label='T(d,n)4He', linewidth=3 )
-        plt.plot( T, sigma_3_v2, label='D(d,p)T', linewidth=3 )
-        plt.plot( T, sigma_3_v3, label='D(d,n)3He', linewidth=3 )
-        plt.plot( T, sigma_3_v4, label='3He(d,p)4He', linewidth=3 )
+        ax1.plot( T_ion, sigma_v1_Bosch, label='T(d,n)4He', linewidth=3 )
+        ax1.plot( T_ion, sigma_v2_Bosch, label='D(d,p)T', linewidth=3 )
+        ax1.plot( T_ion, sigma_v3_Bosch, label='D(d,n)3He', linewidth=3 )
+        ax1.plot( T_ion, sigma_v4_Bosch, label='3He(d,p)4He', linewidth=3 )
 
     if plot_exp_data_old:
-    #    plt.plot( sigma_4_v1[0,:], sigma_4_v1[1,:], 'o', linewidth=2 )#, label='D+T' )
-    #    plt.plot( sigma_4_v2[0,:], (sigma_4_v2[1,:]+sigma_4_v3[1,:])
-    #                , 'o', linewidth=2, label='D+D' )
-    #    plt.plot( sigma_4_v3[0,:], sigma_4_v3[1,:], 'o' )
-    #    plt.plot( sigma_4_v4[0,:], sigma_4_v4[1,:], 'o', linewidth=2 )#, label=r'D+$^3$He'  )
-    #    plt.plot( sigma_4_v5[0,:], sigma_4_v5[1,:], 'o', linewidth=2, label='T+T'  )
-    #    plt.plot( sigma_4_v6[0,:], sigma_4_v6[1,:], 'o-', linewidth=2, label='T+3He'  )
-    #    plt.plot( sigma_4_v7[0,:], sigma_4_v7[1,:], 'o', linewidth=2 )#, label=r'$^3$He+$^3$He'  )
-    #    plt.plot( sigma_4_v8[0,:], sigma_4_v8[1,:], 'o', linewidth=2 )#, label=r'p+$^{11}$B'  )
-
-        lw_intp = 3
-        plt.rcParams.update( {'font.size':14} )
-        # D+T interpolated
-        sigma_4_v1_interp_x = np.linspace(1,1000,1000)
-        sigma_4_v1_interp_y = np.interp( sigma_4_v1_interp_x, sigma_4_v1[0,:], sigma_4_v1[1,:] )
-        plt.plot( sigma_4_v1_interp_x, sigma_4_v1_interp_y, linewidth=lw_intp, label='D+T' )
-        # D+D
-        f_sigma_v = interp1d( sigma_4_v2[0,:], (sigma_4_v2[1,:]+sigma_4_v3[1,:]), kind='cubic' )
-        sigma_v_intp_y = f_sigma_v( sigma_4_v1_interp_x )
-        plt.plot( sigma_4_v1_interp_x, sigma_v_intp_y, linewidth=lw_intp, label='D+D' )
-        # T+T
-        f_sigma_v = interp1d( sigma_4_v5[0,:], sigma_4_v5[1,:], kind='cubic' )
-        sigma_v_intp_y = f_sigma_v( sigma_4_v1_interp_x )
-        plt.plot( sigma_4_v1_interp_x, sigma_v_intp_y, linewidth=lw_intp, label='T+T' )
-        # D+3He
-        f_sigma_v = interp1d( sigma_4_v4[0,:], sigma_4_v4[1,:], kind='cubic' )
-        sigma_4_v4_intp_y = f_sigma_v( sigma_4_v1_interp_x )
-        plt.plot( sigma_4_v1_interp_x, sigma_4_v4_intp_y, linewidth=lw_intp, label=r'D+$^3$He' )
-        # 3He+3He
-        f_sigma_v = interp1d( sigma_4_v7[0,:], sigma_4_v7[1,:], kind='cubic' )
-        sigma_v_intp_y = f_sigma_v( sigma_4_v1_interp_x )
-        plt.plot( sigma_4_v1_interp_x, sigma_v_intp_y, linewidth=lw_intp, label=r'$^3$He+$^3$He' )
-        # p+11B
-        f_sigma_v = interp1d( sigma_4_v8[0,:], sigma_4_v8[1,:], kind='cubic' )
-        sigma_v_intp_y = f_sigma_v( sigma_4_v1_interp_x )
-        plt.plot( sigma_4_v1_interp_x, sigma_v_intp_y, linewidth=lw_intp, label=r'p+$^{11}$B' )
+        lw_McNally = 3
+        ax1.plot( T_ion, sigma_v1_McNally, label='D+T', linewidth=lw_McNally )
+        ax1.plot( T_ion, sigma_v2_McNally+sigma_v3_McNally, label='D+D', linewidth=lw_McNally )
+        ax1.plot( T_ion, sigma_v5_McNally, label='T+T', linewidth=lw_McNally )
+        ax1.plot( T_ion, sigma_v4_McNally, label=r'D+$^3$He', linewidth=lw_McNally )
+        ax1.plot( T_ion, sigma_v7_McNally, label=r'$^3$He+$^3$He', linewidth=lw_McNally )
+        ax1.plot( T_ion, sigma_v8_McNally, label=r'p+$^{11}$B', linewidth=lw_McNally )
 
 
-    plt.ylim( [1e-26, 1e-20] )
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.xlabel( r'ion temperature $T$ in keV' )
-    plt.grid()
-    legend = plt.legend( loc='best', fontsize=15 )
+    ax1.set_ylim( [1e-26, 1e-20] )
+    ax1.set_xscale('log')
+    ax1.set_yscale('log')
+
+    ax1.set_xlabel( r'ion temperature $T$ in keV' )
+    ax1.set_ylabel( r'fusion reactivity $\langle\sigma v\rangle$ in (m$^3$s)' )
+
+    ax1.grid()
+
+    # force ticks to point inwards
+    ax1.tick_params( axis='both', which='both', direction='in', top=True, right=True )
+
+    legend = ax1.legend( loc='best', fontsize=15 )
     legend.get_frame().set_alpha(0.5)
     plt.show()
 
@@ -508,5 +473,6 @@ def debug():
             T_ion, sigma_v_Hively, sigma_v_Bosch, sigma_v_McNally) )
 
 if __name__ == '__main__':
-    debug()
+#    debug()
+    main()
 

@@ -15,6 +15,7 @@ __license__     = 'MIT'
 # import standard modules
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.interpolate as interp
 from scipy.interpolate import interp1d
 
 
@@ -283,11 +284,11 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
 
     reaction_str = reaction_int2str( reaction, silent=silent )
 
-    T_ion = np.array( [ 1, 2, 3, 4, 5, 6, 7, 8, 9
-                       ,10, 20, 30, 40, 50, 60, 70, 80, 90
-                       ,100, 200, 300, 400, 500, 600, 700, 800, 900
-                       ,1000
-                      ] )
+    T_ion_tabulated = np.array( [  1, 2, 3, 4, 5, 6, 7, 8, 9
+                                 ,10, 20, 30, 40, 50, 60, 70, 80, 90
+                                 ,100, 200, 300, 400, 500, 600, 700, 800, 900
+                                 ,1000
+                                ] )
 
     if reaction_str == 'DD_b':       
         # Table I (page 9, top)
@@ -352,11 +353,22 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, silent=True ):
             , 2.79706e-22, 3.03366e-22, 3.19657e-22, 3.32697e-22, 3.44191e-22, 3.54833e-22, 3.64859e-22
             ] )
 
-    #sigma_4_v1_interp_x = np.linspace(1,1000,1000)
-    #sigma_4_v1_interp_y = np.interp( sigma_4_v1_interp_x, sigma_4_v1[0,:], sigma_4_v1[1,:] )
+    # interpolate tabulated values
+    #interp_T        = np.linspace(1,1000,1000)
+    #interp_sigmav   = np.interp( interp_T, T_ion_tabulated, sigma_v )
 
-    #return np.array( [ T_ion ] + [ sigma_v ] )
-    return np.array( [ T_ion, sigma_v ] )
+    # perform PCHIP 1D monotonic cubic interpolation
+    f_interp_sigmav = interp.PchipInterpolator( T_ion_tabulated, sigma_v )
+    sigma_v         = f_interp_sigmav( T_ion )
+
+    # look for nearest value in interpolated data
+#    val_id  = (np.abs(interp_T - T_ion)).argmin()
+#    sigma_v = interp_sigmav[val_id]
+
+    return sigma_v
+
+    #return np.array( [ T_ion_tabulated, sigma_v ] )
+
 #;}}}
 
 
@@ -548,9 +560,10 @@ def debug():
 
     sigma_v_Hively = get_fusion_reactivity_Hively( T_ion, reaction=reaction_int, silent=False )
     sigma_v_Bosch  = get_fusion_reactivity_Bosch( T_ion, reaction=reaction_int, silent=False )
+    sigma_v_McNally= get_fusion_reactivity_McNally( T_ion, reaction=1, silent=False )
 
-    print( 'T_ion = {0} keV, sigma_v_Hively = {1:e}, sigma_v_Bosch = {2:e}'.format(
-            T_ion, sigma_v_Hively, sigma_v_Bosch) )
+    print( 'T_ion = {0} keV, sigma_v_Hively = {1:e}, sigma_v_Bosch = {2:e}, sigma_v_McNally = {3:e}'.format(
+            T_ion, sigma_v_Hively, sigma_v_Bosch, sigma_v_McNally) )
 
 if __name__ == '__main__':
     debug()

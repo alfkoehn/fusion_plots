@@ -726,11 +726,14 @@ def main():
     sigma_v7_McNally = get_fusion_reactivity_McNally( T_ion, reaction=7 )
     sigma_v8_McNally = get_fusion_reactivity_McNally( T_ion, reaction=8 )
 
+    sigma_v9_Angulo = get_fusion_reactivity_Angulo( T_ion, reaction=9 )
+
     plot_Hively     = False
     plot_Bosch      = False
     plot_McNally    = True
+    plot_Angulo     = True
 
-    write_datasource2plot   = True
+    write_datasource2plot   = False
     write_plotcredit        = True
 
     if plot_Hively:
@@ -753,12 +756,18 @@ def main():
         lw_McNally = 3
         ax1.plot( T_ion, sigma_v1_McNally, label='D+T', linewidth=lw_McNally )
         ax1.plot( T_ion, sigma_v2_McNally+sigma_v3_McNally, label='D+D', linewidth=lw_McNally )
-        ax1.plot( T_ion, sigma_v5_McNally, label='T+T', linewidth=lw_McNally )
+#        ax1.plot( T_ion, sigma_v5_McNally, label='T+T', linewidth=lw_McNally )
         ax1.plot( T_ion, sigma_v4_McNally, label=r'D+$^3$He', linewidth=lw_McNally )
         ax1.plot( T_ion, sigma_v7_McNally, label=r'$^3$He+$^3$He', linewidth=lw_McNally )
-        ax1.plot( T_ion, sigma_v8_McNally, label=r'p+$^{11}$B', linewidth=lw_McNally )
+#        ax1.plot( T_ion, sigma_v8_McNally, label=r'p+$^{11}$B', linewidth=lw_McNally )
 
         txt_ref_str = 'McNally dataset'
+
+    if plot_Angulo:
+        lw_Angulo = 3
+        ax1.plot( T_ion, sigma_v9_Angulo, label='p+p', linewidth=lw_Angulo )
+        
+        txt_ref_str = 'Angelo fit'
 
     if write_datasource2plot:
         txt_ref_x0 = .75
@@ -766,7 +775,8 @@ def main():
         fig1.text( txt_ref_x0, txt_ref_y0, txt_ref_str, fontsize=10 )
 
     ax1.set_xlim( np.amin(T_ion), np.amax(T_ion) )
-    ax1.set_ylim( [1e-26, 1e-20] )
+#    ax1.set_ylim( [1e-26, 1e-20] )
+    ax1.set_ylim( [1e-50, 1e-20] )
     ax1.set_xscale('log')
     ax1.set_yscale('log')
 
@@ -823,6 +833,6 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
-#    main()
+#    test()
+    main()
 

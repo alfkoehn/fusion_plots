@@ -15,6 +15,7 @@ __license__     = 'MIT'
 # import standard modules
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.constants as consts
 import scipy.interpolate as interp
 
 plt.rcParams.update( {'font.size':12} )
@@ -67,6 +68,7 @@ def reaction_int2str( reaction_int, silent=True ):
                          p + 4He + n     4 %
         7: 3He + 3He --> p + p + 4He 
         8: p + 11B   --> 4He + 4He + 4He
+        9: p + p     --> 2H + nu + e^+
 
     Parameters
     ----------
@@ -89,6 +91,7 @@ def reaction_int2str( reaction_int, silent=True ):
                       6 : 'T3He',
                       7 : '3He3He',
                       8 : 'p11B',
+                      9 : 'pp',
                      }
 
     # check if reaction_int is in keys of dict, return NaN if not
@@ -521,6 +524,74 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, extrapolate=True, silent=T
 #;}}}
 
 
+def get_fusion_reactivity_Angulo( T_ion, reaction=10, reaction_str='', extrapolate=True, silent=True ):
+#;{{{
+
+    func_name = 'get_fusion_reactivity_Angulo'
+
+    if len(reaction_str) == 0:
+        reaction_str = reaction_int2str( reaction, silent=silent )
+
+    # temperatures in Angulo's formula are in 10^9 K
+    eV2K    = consts.e/consts.Boltzmann     
+    T9      = T_ion*1e3 * eV2K * 1e-9
+
+    if not silent:
+        print( '{0}:'.format(func_name) )
+        print( '    fusion reactivity as obtained from the following paper:' )
+        print( '    C. Angulo et al., Nuclear Physics A 656 (1979) 3-183')
+        print( '    (more info in doc-string)' )
+        print( '    reaction {0:d} ({1}), T_ion = {2} keV, T9 = {3} K'.format(reaction, reaction_str, T_ion, T9) )
+
+    if reaction_str == 'pp':
+        A = np.array( [ 4.08e-15, -3.381, 3.82, 1.51, 0.144, -1.14e-2 ] )
+    else:
+        print( '{0}: ERROR, no such reaction'.format( func_name ) )
+        return np.nan
+
+    sigma_v = 1./consts.Avogadro * A[0]*T9**(-2./3.) * np.exp(A[1]*T9**(-1./3.)) * (
+                1. + A[2]*T9 + A[3]*T9**2 + A[4]*T9**3 + A[5]*T9**4 )
+
+    # scale to m^3/s
+    sigma_v *= 1e-6
+
+    return sigma_v
+
+#;}}}
+
+
+def get_fusion_reactivity_Atzeni( T_ion, reaction=10, reaction_str='', extrapolate=True, silent=True ):
+#;{{{
+
+    func_name = 'get_fusion_reactivity_Atzeni'
+
+    if len(reaction_str) == 0:
+        reaction_str = reaction_int2str( reaction, silent=silent )
+
+    if not silent:
+        print( '{0}:'.format(func_name) )
+        print( '    fusion reactivity as obtained from the following paper:' )
+        print( '    Atzeni')
+        print( '    (more info in doc-string)' )
+        print( '    reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
+
+    if reaction_str == 'pp':
+        A = np.array( [ 1.56e-37, -14.94, 0.044, 2.03e-4, 5e-7 ] )
+    else:
+        print( '{0}: ERROR, no such reaction'.format( func_name ) )
+        return np.nan
+
+    sigma_v = A[0]*T_ion**(-2./3.) * np.exp(A[1]*T_ion**(-1./3.)) * (
+                1. + A[2]*T_ion + A[3]*T_ion**2 + A[4]*T_ion**2 )
+
+    # scale to m^3/s
+    sigma_v *= 1e-6
+
+    return sigma_v
+
+#;}}}
+
+
 def main():
 #;{{{
 
@@ -538,7 +609,7 @@ def main():
     reaction = 1
 
     # T_ion in keV
-    T_ion = np.linspace(1,100,1000)
+    T_ion = np.linspace(1,1000,1000)
 
     # get fusion reactivity values
     sigma_v1_Hively = get_fusion_reactivity_Hively( T_ion, reaction=1 )
@@ -634,13 +705,13 @@ def main():
 def test():
 #;{{{
 
-    print( 'debug' )
+    print( 'testing' )
 
     reaction_int = 1
     reaction_str = reaction_int2str( reaction_int, silent=False )
     print( 'reaction = {0}, {1}'.format( reaction_int, reaction_str ) )
 
-    T_ion   = .1
+    T_ion   = 1.
 
     sigma_v_Hively = get_fusion_reactivity_Hively( T_ion, reaction=reaction_int, silent=False, extrapolate=False )
     sigma_v_Bosch  = get_fusion_reactivity_Bosch( T_ion, reaction=reaction_int, silent=False, extrapolate=True )
@@ -648,10 +719,15 @@ def test():
 
     print( 'T_ion = {0} keV, sigma_v_Hively = {1:e}, sigma_v_Bosch = {2:e}, sigma_v_McNally = {3:e}'.format(
             T_ion, sigma_v_Hively, sigma_v_Bosch, sigma_v_McNally) )
+
+    sigma_v_Angulo  = get_fusion_reactivity_Angulo( T_ion, reaction=9, reaction_str='', extrapolate=True, silent=False )
+    sigma_v_Atzeni  = get_fusion_reactivity_Atzeni( T_ion, reaction=9, reaction_str='', extrapolate=True, silent=False )
+    print( 'T_ion = {0} keV, sigma_v_Angulo = {1:e}, sigma_v_Atzeni = {2:e}'.format(
+            T_ion, sigma_v_Angulo, sigma_v_Atzeni) )
 #;}}}
 
 
 if __name__ == '__main__':
-#    test()
-    main()
+    test()
+#    main()
 

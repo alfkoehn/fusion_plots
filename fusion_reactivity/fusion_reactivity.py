@@ -527,7 +527,6 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, extrapolate=True, silent=T
 def get_fusion_reactivity_Angulo( T_ion, reaction=9, reaction_str='', extrapolate=True, silent=True ):
 #;{{{
     """
-
     Return the fusion reactivity for various fusion reactions.
 
     Fusion reactivity from analytical approximations, huge variety of reactions.
@@ -609,10 +608,39 @@ def get_fusion_reactivity_Angulo( T_ion, reaction=9, reaction_str='', extrapolat
 #;}}}
 
 
-def get_fusion_reactivity_Atzeni( T_ion, reaction=10, reaction_str='', extrapolate=True, silent=True ):
+def get_fusion_reactivity_Atzeni( T_ion, reaction=9, reaction_str='', extrapolate=True, silent=True ):
 #;{{{
+    """
+    Return the fusion reactivity for various fusion reactions.
+
+    Fusion reactivity from analytical approximations (very nice book). 
+    Ref: S. Atzeni, J. Meyer-ter-Vehn, "Intertial Fusion: Beam Plasma Interactions,
+         Hydrodynamics, Dense Plasma Physics" (Oxford Science Publications, 2004)
+         ISBN-10: 0199568014
+         ISBN-13: 978-0199568017
+    
+    Parameters
+    ----------
+    T_ion: float
+        ion temperature in keV, valid range a bit unclear, for pp the 
+        values for Angulo-paper are taken as it is references: ~ .1-1000 keV
+    reaction: int
+        defines reaction considered, default value is 9
+    extrapolate: bool
+        if True, T_ion outside of valid energy range (according to paper)
+        will be extrapolated; if false those values will be set to NaN
+    silent: bool
+        if True, some (useful ?) output will be printed to console
+
+    Returns
+    -------
+    float
+        fusion reactivity in m^3/s
+    """
 
     func_name = 'get_fusion_reactivity_Atzeni'
+
+    energy_range = np.array( [.1, 1000] )
 
     if len(reaction_str) == 0:
         reaction_str = reaction_int2str( reaction, silent=silent )
@@ -620,7 +648,7 @@ def get_fusion_reactivity_Atzeni( T_ion, reaction=10, reaction_str='', extrapola
     if not silent:
         print( '{0}:'.format(func_name) )
         print( '    fusion reactivity as obtained from the following paper:' )
-        print( '    Atzeni')
+        print( '    Atzeni & Meyer-ter-Vehn: Physics of Intertial Fusion (2004)')
         print( '    (more info in doc-string)' )
         print( '    reaction {0:d} ({1}), T_ion = {2} keV'.format(reaction, reaction_str, T_ion) )
 
@@ -635,6 +663,24 @@ def get_fusion_reactivity_Atzeni( T_ion, reaction=10, reaction_str='', extrapola
 
     # scale to m^3/s
     sigma_v *= 1e-6
+
+    # check if T_ion is within valid energy range
+    if (np.amin(T_ion) < energy_range[0]) or (np.amax(T_ion) > energy_range[1]):
+        print( '{0}:'.format(func_name) )
+        print( '    WARNING: T_ion is outside of valid energy range' )
+        if extrapolate:
+            print( '{0}extrapolate was set to True (data will be extrapolated)'.format( 
+                   ' '*13) )
+        else:
+            print( '{0}extrapolate was set to False (data will be set to NaN)'.format( 
+                   ' '*13) )
+
+            # if T_ion is array, set all values outside of range to NaN
+            if np.size(T_ion) > 1:
+                sigma_v[ T_ion < energy_range[0] ] = np.nan
+                sigma_v[ T_ion > energy_range[1] ] = np.nan
+            else:
+                sigma_v = np.nan
 
     return sigma_v
 

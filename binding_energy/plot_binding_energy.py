@@ -178,7 +178,7 @@ def main():
 #{{{
 
     # empty string results in plot into window, otherwise into file
-    fname_plot  = ''
+    fname_plot  = 'binding_energy_per_nucleon.png'
 
     # webpage with NIST data
     url = "http://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=&ascii=ascii2&isotype=some"
@@ -190,7 +190,7 @@ def main():
     bind_energy_norm    = get_binding_energy( NIST_dataset, norm=True)
 
     # start plot
-    german_labels = True
+    german_labels = False
 
     # create empty figure with no axes
     fig = plt.figure( figsize=(10,6) )
@@ -284,6 +284,9 @@ def main():
 
     # force ticks to point inwards
     ax.tick_params( axis='both', which='both', direction='in', top=True, right=True )
+
+    # add credit string
+    fig.text( .7+.04, .885, credit_str, fontsize=7 )
 
     if len( fname_plot ):
         plt.savefig( fname_plot, bbox_inches='tight', dpi=600 )

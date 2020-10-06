@@ -13,6 +13,7 @@ __license__     = 'MIT'
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
+from urllib.request import urlopen
 
 # credit string to include at top of plot, to ensure people know they can use the plot
 # (someone once told me, every plot appearing somewhere in the internet
@@ -25,89 +26,125 @@ credit_str  = f'{__author__}, CC BY-SA 4.0'
 plt.rcParams.update({'font.size': 18})
 
 
-def get_atomic_weights_from_NIST( url ):
+def read_NIST_data( url='', fname='' ):
 #{{{
     """
-    Download the atomic weight dataset from NIST
+    Read the atomic weight dataset from NIST from web or file.
 
     Parameters
     ----------
     url: string
         datasets from NIST can be obtained via queries, here we need the following
         http://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=&ascii=ascii2&isotype=some
+    fname: string
+        alternatively to directly reading the data from NIST, NIST also offers to 
+        download an ascii file (which you need to do before running this script)
         
     Returns
     -------
-    atomic_weights: dict
+    NIST_dataset: dict
     """
 
+    # dictionary into which the data will be saved
+    # note: keys must exactly correspond to identifiers on website / in file
+    #       more clever way would be to create the dictionary dynamically
+    #       reading (using) the identifiers from the website
+    NIST_dataset = { 'Atomic Number':[],
+                     'Atomic Symbol':[],
+                     'Mass Number':[],
+                     'Relative Atomic Mass':[]
+                   }
 
+    # if url is provided, read NIST dataset from webpage
+    if len(url) > 0:
+        # open connection to URL and check if everything is fine
+        web_NIST = urlopen(url)
+        if (web_NIST.getcode() != 200):
+            print( 'ERROR: http-code while trying to read NIST data from web: {0}'.format(web_NIST.getcode()) )
+            return -1
+        # read website line by line
+        for line in web_NIST:
+            # decode line into readable string
+            decoded_line = line.decode( "utf-8" )
 
-    # filename of data exported from NIST
-    # source: http://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=&ascii=ascii2&isotype=some
-    fname = 'atomic_weights.dat'
+            for label in NIST_dataset:
+                if decoded_line.startswith( label ):
 
-    # dictionary into which all the data will be saved
-    # note: the keys muss exactly correspond to the expressions used in the file
-    #       one could probably do it better/safer by dynamically creating the dictionary
-    #       using as tags what is found in the file
-    atomic_weights = { 'Atomic Number':[], 'Mass Number':[], 'Relative Atomic Mass':[], 'Atomic Symbol':[] }
+                    # get index of "=", starting to look after identifier text at beginning
+                    # note: python gets the correct position (text at beginning is just ignored)
+                    id_0 = decoded_line.index( "=", len(label) ) + 1
 
-    # loop through file line by line
-    for line in open( fname ):
-        if "=" in line:
-            tag, value = line.split( '=' )
-            tag   = tag.strip()
-            value = value.strip()
-            # remove parantheses in values which indicate error
-            if '(' in value:
-                value = value.split( '(' )[0]
-            if tag in atomic_weights.keys():
-                atomic_weights[ tag ].append( value )
+                    # extract value and if present, remove error-margin, given within brackets ()
+                    if '(' in decoded_line[ id_0: ]:
+                        id_1    = decoded_line.index( "(", len(label) )
+                    else:
+                        id_1    = len(decoded_line)
+                    if label == 'Atomic Symbol':
+                        val = decoded_line[id_0:id_1]
+                    else:
+                        val = float(decoded_line[id_0:id_1])
 
-        # check if list lengths is the same for each key
-        if line == '\n':
-            lengths = []
-            # get the lengths of the arrays for each key
-            for key in atomic_weights:
-                lengths.append( len( atomic_weights[key] ) )
-            # check if all the lengths are equal
-            if not all( elem == lengths[0] for elem in lengths ):
-                print( 'WARNING: there is an error in extracting the data for the file' )
-                print( '         and sorting it into a dictionary' )
+                    # add value to dictionary
+                    NIST_dataset[ label ].append(val)
+         
 
-    return atomic_weights
+    # if filename is provided during function call, read NIST dataset from file
+    if len(fname) > 0:
+        # loop through file line by line
+        for line in open( fname ):
+            if "=" in line:
+                tag, value = line.split( '=' )
+                tag   = tag.strip()
+                value = value.strip()
+                # remove parantheses in values which indicate error
+                if '(' in value:
+                    value = value.split( '(' )[0]
+                if tag in NIST_dataset.keys():
+                    NIST_dataset[ tag ].append( value )
+
+            # check if list lengths is the same for each key
+            if line == '\n':
+                lengths = []
+                # get the lengths of the arrays for each key
+                for key in NIST_dataset:
+                    lengths.append( len( NIST_dataset[key] ) )
+                # check if all the lengths are equal
+                if not all( elem == lengths[0] for elem in lengths ):
+                    print( 'WARNING: there is an error in extracting the data for the file' )
+                    print( '         and sorting it into a dictionary' )
+
+    return NIST_dataset
 #}}}
 
 
-def get_mass_number( atomic_weights ):
+def get_mass_number( NIST_dataset ):
 #{{{
     """
     Extracts the mass number from the NIST dataset.
 
     Parameters
     ----------
-    atomic_weights: dict
+    NIST_dataset: dict
 
     Returns
     -------
     mass_number: numpy array
     """
 
-    atomic_mass = np.asarray( atomic_weights['Relative Atomic Mass'], dtype=np.float32 )
+    atomic_mass = np.asarray( NIST_dataset['Relative Atomic Mass'], dtype=np.float32 )
     mass_number = np.around( atomic_mass )
 
     return mass_number
 #}}}
 
 
-def get_binding_energy( atomic_weights, norm=True):
+def get_binding_energy( NIST_dataset, norm=True):
 #{{{
     """
 
     Parameters
     ----------
-    atomic_weights: dict
+    NIST_dataset: dict
     norm: boolean
 
     Returns
@@ -122,9 +159,9 @@ def get_binding_energy( atomic_weights, norm=True):
     proton_u    = 1.00727646688
     electron_u  = 0.00054858
 
-    atomic_mass     = np.asarray( atomic_weights['Relative Atomic Mass'], dtype=np.float32 )
-    atomic_number   = np.asarray( atomic_weights['Atomic Number'], dtype=np.float32 )
-    mass_number     = get_mass_number( atomic_weights )
+    atomic_mass     = np.asarray( NIST_dataset['Relative Atomic Mass'], dtype=np.float32 )
+    atomic_number   = np.asarray( NIST_dataset['Atomic Number'], dtype=np.float32 )
+    mass_number     = get_mass_number( NIST_dataset )
     n_neutrons      = mass_number - atomic_number
     mass_defect     = ( ( n_neutrons*neutron_u + atomic_number*proton_u + atomic_number*electron_u ) - atomic_mass ) * amu
 
@@ -139,9 +176,18 @@ def get_binding_energy( atomic_weights, norm=True):
 
 def main():
 #{{{
-    atomic_weights      = get_atomic_weights_from_NIST('')
-    mass_number         = get_mass_number( atomic_weights )
-    bind_energy_norm    = get_binding_energy( atomic_weights, norm=True)
+
+    # empty string results in plot into window, otherwise into file
+    fname_plot  = ''
+
+    # webpage with NIST data
+    url = "http://physics.nist.gov/cgi-bin/Compositions/stand_alone.pl?ele=&ascii=ascii2&isotype=some"
+    #fname = 'atomic_weights.dat'
+
+    # load atomic weights dataset from NIST and process data 
+    NIST_dataset        = read_NIST_data( url=url )#, #fname=fname )
+    mass_number         = get_mass_number( NIST_dataset )
+    bind_energy_norm    = get_binding_energy( NIST_dataset, norm=True)
 
     # start plot
     german_labels = True
@@ -236,8 +282,15 @@ def main():
         ax.annotate( 'fission', 
                      xy=(110, 1.2), size='large' )
 
+    # force ticks to point inwards
+    ax.tick_params( axis='both', which='both', direction='in', top=True, right=True )
 
-    plt.show()
+    if len( fname_plot ):
+        plt.savefig( fname_plot, bbox_inches='tight', dpi=600 )
+        print( '    plot written into {0}'.format( fname_plot ) )
+    else:
+        plt.show()
+
 #}}}
 
 

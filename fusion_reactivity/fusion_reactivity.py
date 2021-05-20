@@ -18,7 +18,13 @@ import matplotlib.pyplot as plt
 import scipy.constants as consts
 import scipy.interpolate as interp
 
+# change some default properties of matplotlib
 plt.rcParams.update( {'font.size':12} )
+# force ticks to point inwards
+plt.rcParams['xtick.direction'] = 'in'
+plt.rcParams['ytick.direction'] = 'in'
+plt.rcParams['xtick.top']       = True
+plt.rcParams['ytick.right']     = True
 
 
 def make_plot( fname_plot='' ):
@@ -696,8 +702,8 @@ def main():
     ax1  = fig1.add_subplot( 1,1,1 )
    
     # if empty, plot will be put out to X-window
-    plot_fname = 'fusion_reactivity.png'
-    #plot_fname  = ''
+    #plot_fname = 'fusion_reactivity.png'
+    plot_fname  = ''
 
     # set fusion reaction, see function reaction_int2str
     reaction = 1
@@ -778,9 +784,6 @@ def main():
     ax1.set_ylabel( r'fusion reactivity $\langle\sigma v\rangle$ in (m$^3$s)' )
 
     ax1.grid()
-
-    # force ticks to point inwards
-    ax1.tick_params( axis='both', which='both', direction='in', top=True, right=True )
 
     legend = ax1.legend( loc='best', fontsize=15 )
     legend.get_frame().set_alpha(0.5)

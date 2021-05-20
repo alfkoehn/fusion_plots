@@ -38,8 +38,6 @@ def make_plot( fname_plot='' ):
 
     if len(fname_plot) > 0:
         plt.savefig( fname_plot, dpi=600, bbox_inches='tight' )
-        #fig.tight_layout()
-        #fig.savefig( fname_plot, dpi=600 )
         print( 'written plot into file {0}'.format(fname_plot) )
     else:
         plt.show()
@@ -699,34 +697,13 @@ def main():
    
     # if empty, plot will be put out to X-window
     plot_fname = 'fusion_reactivity.png'
+    #plot_fname  = ''
 
     # set fusion reaction, see function reaction_int2str
     reaction = 1
 
     # T_ion in keV
     T_ion = np.linspace(1,1000,1000)
-
-    # get fusion reactivity values
-    sigma_v1_Hively = get_fusion_reactivity_Hively( T_ion, reaction=1 )
-    sigma_v2_Hively = get_fusion_reactivity_Hively( T_ion, reaction=2 )
-    sigma_v3_Hively = get_fusion_reactivity_Hively( T_ion, reaction=3 )
-    sigma_v4_Hively = get_fusion_reactivity_Hively( T_ion, reaction=4 )
-
-    sigma_v1_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=1 )
-    sigma_v2_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=2 )
-    sigma_v3_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=3 )
-    sigma_v4_Bosch = get_fusion_reactivity_Bosch( T_ion, reaction=4 )
-
-    sigma_v1_McNally = get_fusion_reactivity_McNally( T_ion, reaction=1 )
-    sigma_v2_McNally = get_fusion_reactivity_McNally( T_ion, reaction=2 )
-    sigma_v3_McNally = get_fusion_reactivity_McNally( T_ion, reaction=3 )
-    sigma_v4_McNally = get_fusion_reactivity_McNally( T_ion, reaction=4 )
-    sigma_v5_McNally = get_fusion_reactivity_McNally( T_ion, reaction=5 )
-    sigma_v6_McNally = get_fusion_reactivity_McNally( T_ion, reaction=6 )
-    sigma_v7_McNally = get_fusion_reactivity_McNally( T_ion, reaction=7 )
-    sigma_v8_McNally = get_fusion_reactivity_McNally( T_ion, reaction=8 )
-
-    sigma_v9_Angulo = get_fusion_reactivity_Angulo( T_ion, reaction=9 )
 
     plot_Hively     = False
     plot_Bosch      = False
@@ -737,37 +714,52 @@ def main():
     write_plotcredit        = True
 
     if plot_Hively:
-        ax1.plot( T_ion, sigma_v1_Hively, label='T(d,n)4He', linewidth=2 )
-        ax1.plot( T_ion, sigma_v2_Hively, label='D(d,p)T', linewidth=2 )
-        ax1.plot( T_ion, sigma_v3_Hively, label='D(d,n)3He', linewidth=2 )
-        ax1.plot( T_ion, sigma_v4_Hively, label='3He(d,p)4He', linewidth=2 )
-
         txt_ref_str = 'Hively fit'
+        ax1.plot( T_ion, get_fusion_reactivity_Hively(T_ion, reaction=1), 
+                  label='T(d,n)4He', linewidth=2 )
+        ax1.plot( T_ion, get_fusion_reactivity_Hively(T_ion, reaction=2), 
+                  label='D(d,p)T', linewidth=2 )
+        ax1.plot( T_ion, get_fusion_reactivity_Hively(T_ion, reaction=3),  
+                  label='D(d,n)3He', linewidth=2 )
+        ax1.plot( T_ion, get_fusion_reactivity_Hively(T_ion, reaction=4),  
+                  label='3He(d,p)4He', linewidth=2 )
 
     if plot_Bosch:
-        ax1.plot( T_ion, sigma_v1_Bosch, label='T(d,n)4He', linewidth=3 )
-        ax1.plot( T_ion, sigma_v2_Bosch, label='D(d,p)T', linewidth=3 )
-        ax1.plot( T_ion, sigma_v3_Bosch, label='D(d,n)3He', linewidth=3 )
-        ax1.plot( T_ion, sigma_v4_Bosch, label='3He(d,p)4He', linewidth=3 )
-
         txt_ref_str = 'Bosch fit'
+        ax1.plot( T_ion, get_fusion_reactivity_Bosch(T_ion, reaction=1),
+                  label='T(d,n)4He', linewidth=3 )
+        ax1.plot( T_ion, get_fusion_reactivity_Bosch(T_ion, reaction=2),
+                  label='D(d,p)T', linewidth=3 )
+        ax1.plot( T_ion, get_fusion_reactivity_Bosch(T_ion, reaction=3),
+                  label='D(d,n)3He', linewidth=3 )
+        ax1.plot( T_ion, get_fusion_reactivity_Bosch(T_ion, reaction=4),
+                  label='3He(d,p)4He', linewidth=3 )
 
     if plot_McNally:
-        lw_McNally = 3
-        ax1.plot( T_ion, sigma_v1_McNally, label='D+T', linewidth=lw_McNally )
-        ax1.plot( T_ion, sigma_v2_McNally+sigma_v3_McNally, label='D+D', linewidth=lw_McNally )
-#        ax1.plot( T_ion, sigma_v5_McNally, label='T+T', linewidth=lw_McNally )
-        ax1.plot( T_ion, sigma_v4_McNally, label=r'D+$^3$He', linewidth=lw_McNally )
-        ax1.plot( T_ion, sigma_v7_McNally, label=r'$^3$He+$^3$He', linewidth=lw_McNally )
-#        ax1.plot( T_ion, sigma_v8_McNally, label=r'p+$^{11}$B', linewidth=lw_McNally )
-
+        lw_McNally  = 3
         txt_ref_str = 'McNally dataset'
 
+        ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=1), 
+                  label='D+T', linewidth=lw_McNally )
+        ax1.plot( T_ion, ( get_fusion_reactivity_McNally(T_ion, reaction=2)
+                          +get_fusion_reactivity_McNally(T_ion, reaction=3)),
+                  label='D+D', linewidth=lw_McNally )
+        #ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=5), 
+        #          label='T+T', linewidth=lw_McNally )
+        ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=4), 
+                  label=r'D+$^3$He', linewidth=lw_McNally )
+        ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=7), 
+                  label=r'$^3$He+$^3$He', linewidth=lw_McNally )
+        #ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=8), 
+        #          label=r'p+$^{11}$B', linewidth=lw_McNally )
+
     if plot_Angulo:
-        lw_Angulo = 3
-        ax1.plot( T_ion, sigma_v9_Angulo, label='p+p', linewidth=lw_Angulo )
-        
+        lw_Angulo   = 3
         txt_ref_str = 'Angelo fit'
+
+        ax1.plot( T_ion, get_fusion_reactivity_Angulo(T_ion, reaction=9),
+                  label='p+p', linewidth=lw_Angulo )
+        
 
     if write_datasource2plot:
         txt_ref_x0 = .75
@@ -775,8 +767,10 @@ def main():
         fig1.text( txt_ref_x0, txt_ref_y0, txt_ref_str, fontsize=10 )
 
     ax1.set_xlim( np.amin(T_ion), np.amax(T_ion) )
-#    ax1.set_ylim( [1e-26, 1e-20] )
-    ax1.set_ylim( [1e-50, 1e-20] )
+    if plot_Angulo:
+        ax1.set_ylim( [1e-50, 1e-20] )
+    else:
+        ax1.set_ylim( [1e-26, 1e-20] )
     ax1.set_xscale('log')
     ax1.set_yscale('log')
 

@@ -702,8 +702,8 @@ def main():
     ax1  = fig1.add_subplot( 1,1,1 )
    
     # if empty, plot will be put out to X-window
-    #plot_fname = 'fusion_reactivity.png'
-    plot_fname  = ''
+    plot_fname = 'fusion_reactivity.png'
+    #plot_fname  = ''
 
     # set fusion reaction, see function reaction_int2str
     reaction = 1

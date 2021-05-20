@@ -156,8 +156,6 @@ def make_plot( fname_plot='' ):
 
     if len(fname_plot) > 0:
         plt.savefig( fname_plot, dpi=600, bbox_inches='tight' )
-        #fig.tight_layout()
-        #fig.savefig( fname_plot, dpi=600 )
         print( 'written plot into file {0}'.format(fname_plot) )
     else:
         plt.show()

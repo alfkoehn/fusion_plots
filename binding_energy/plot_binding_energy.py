@@ -24,6 +24,11 @@ credit_str  = f'{__author__}, CC BY-SA 4.0'
 
 # change default plot formatting
 plt.rcParams.update({'font.size': 18})
+# force ticks to point inwards
+plt.rcParams['xtick.direction'] = 'in'
+plt.rcParams['ytick.direction'] = 'in'
+plt.rcParams['xtick.top']       = True
+plt.rcParams['ytick.right']     = True
 
 
 def read_NIST_data( url='', fname='' ):
@@ -281,9 +286,6 @@ def main():
                   edgecolor='black', facecolor='black')
         ax.annotate( 'fission', 
                      xy=(110, 1.2), size='large' )
-
-    # force ticks to point inwards
-    ax.tick_params( axis='both', which='both', direction='in', top=True, right=True )
 
     # add credit string
     fig.text( .7+.04, .885, credit_str, fontsize=7 )

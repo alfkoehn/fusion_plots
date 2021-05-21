@@ -16,8 +16,13 @@ __license__     = 'MIT'
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+# change some default properties of matplotlib
 plt.rcParams.update({'font.size':12})
+# force ticks to point inwards
+plt.rcParams['xtick.direction'] = 'in'
+plt.rcParams['ytick.direction'] = 'in'
+plt.rcParams['xtick.top']       = True
+plt.rcParams['ytick.right']     = True
 
 
 def get_DT_fusion_reactivity( T_ion, silent=True ):
@@ -478,8 +483,6 @@ def main():
     ax1.set_ylim( 1e16, 1e22 )
     ax1.set_xscale( 'log' )
     ax1.set_yscale( 'log' )
-    ax1.tick_params(axis='both', which='both', direction='in', 
-                    top=True, right=True )
 
     ax1.legend( loc='lower right' )
 

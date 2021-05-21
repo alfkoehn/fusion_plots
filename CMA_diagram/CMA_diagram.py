@@ -26,6 +26,11 @@ import matplotlib.ticker
 
 
 plt.rcParams.update({'font.size':12})
+# force ticks to point inwards
+plt.rcParams['xtick.direction'] = 'in'
+plt.rcParams['ytick.direction'] = 'in'
+plt.rcParams['xtick.top']       = True
+plt.rcParams['ytick.right']     = True
 
 
 def make_plot( fname_plot='' ):
@@ -433,9 +438,6 @@ def main():
     # set plot ranges
     ax1.set_xlim( x_range )
     ax1.set_ylim( y_range )
-
-    # force ticks to points inwards (only required on some machines)
-    ax1.tick_params( axis='both', which='both', direction='in', top=True, right=True )
 
     ax1.xaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:.1f}"))
     ax1.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:.1f}"))

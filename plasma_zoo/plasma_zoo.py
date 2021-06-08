@@ -20,6 +20,13 @@ import scipy.constants as consts
 from matplotlib.colors import LogNorm
 from matplotlib import ticker
 
+# credit string to include at top of plot, to ensure people know they can use the plot
+# (someone once told me, every plot appearing somewhere in the internet
+#  should contain information on how to use it, otherwise it is useless)
+# note that the license refers only to that specific plot
+# the license for the code is mentioned in the LICENSE file (and above)
+credit_str  = f'{__author__}, CC BY-SA 4.0'
+ 
 
 def calc_debye( n=1e20, T=1, unit='eV' ):
 #;{{{

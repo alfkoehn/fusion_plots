@@ -306,7 +306,7 @@ def main():
     ax1.fill_between( x=T_full*1e-3, y1=F_bremslimit(T_full,1)*1e-3, y2=1e22, 
                       color='grey',
                     )
-    ax1.annotate( 'bremsstrahlung limit', xy=( 0.15, 1.1e21), color='.85', rotation=29.5 )
+    ax1.annotate( 'bremsstrahlung limit', xy=( 0.15, 1.1e20), color='.85', rotation=29.5 )
 
     # filled area indicating ignition
     T_ignition  = np.logspace( np.log10(1e3), np.log10(100e3), 100 )
@@ -493,7 +493,7 @@ def main():
 
     ax1.legend( loc='lower right' )
 
-    fig1.text( .71, .885, credit_str, fontsize=7 )
+    fig1.text( .703, .885, credit_str, fontsize=7 )
 
     make_plot( fname_plot='triple_product_vs_T.png' )
 

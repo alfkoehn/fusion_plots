@@ -24,6 +24,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker
 
+# credit string to include at top of plot, to ensure people know they can use the plot
+# (someone once told me, every plot appearing somewhere in the internet
+#  should contain information on how to use it, otherwise it is useless)
+# note that the license refers only to that specific plot
+# the license for the code is mentioned in the LICENSE file (and above)
+credit_str  = f'{__author__}, CC BY-SA 4.0'
 
 plt.rcParams.update({'font.size':12})
 # force ticks to point inwards
@@ -442,14 +448,6 @@ def main():
     ax1.xaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:.1f}"))
     ax1.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:.1f}"))
 
-    # write credits into plot, to ensure that people know they can use the plot
-    # (somebody once told me, every plot appearing somewhere in the internet
-    #  should contain information on how to use it, otherwise it is useless)
-    # you probably want to remove it when you make you own plot
-    # attribution would still be gratefully acknowledged :)
-    # also note that the licence refers only to that specific plot
-    # the licence for the code is mentioned above and in the LICENCE file
-    credit_str = u'Alf Köhn-Seeman, CC BY-SA 4.0'
     fig.text( .71, .885, credit_str, fontsize=7 )
 
     make_plot( fname_plot=fname_plot )

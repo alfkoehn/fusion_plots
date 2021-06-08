@@ -448,7 +448,7 @@ def main():
     ax1.xaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:.1f}"))
     ax1.yaxis.set_major_formatter(matplotlib.ticker.StrMethodFormatter("{x:.1f}"))
 
-    fig.text( .71, .885, credit_str, fontsize=7 )
+    fig.text( .703, .885, credit_str, fontsize=7 )
 
     make_plot( fname_plot=fname_plot )
     #;}}}

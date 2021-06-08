@@ -604,7 +604,7 @@ def main():
     # attribution would still be gratefully acknowledged :)
     # also note that the licence refers only to that specific plot
     # the licence for the code is mentioned above and in the LICENCE file
-    credit_str = u'Alf Köhn-Seeman, CC BY-SA 4.0'
+    credit_str = u'Alf Köhn-Seemann, CC BY-SA 4.0'
     fig1.text( .65, .89, credit_str, fontsize=7 )
 
     if len( fname_plot ):
@@ -612,7 +612,6 @@ def main():
         print( '    plot written into {0}'.format( fname_plot ) )
     else:
         plt.show()
-
 
 #;}}}
 

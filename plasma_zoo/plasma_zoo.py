@@ -398,12 +398,12 @@ def make_N_D_contours( fig, ax,
         print( ND_contLevels )
 
     # manually set position for labels of contour levels
-    ND_contLabelsPos = [ (1e26,3.5e1), 
-                         (1e31,2e5),
-                         (1e25,2e5),
-                         (1e19,2e5),
-                         (1e13,2e5),
-                         (1e7, 2e5)
+    ND_contLabelsPos = [ (1e26,6e0), 
+                         (1e31,3e4),
+                         (1e25,3e4),
+                         (1e19,3e4),
+                         (1e13,3e4),
+                         (1e7, 3e4)
                        ]
     cont_ND = ax.contour( nn, TT, N_D,
                           levels=ND_contLevels,
@@ -479,7 +479,7 @@ def write_plasma_limits_into_plot( ax,
     ax.plot( n_vals, calc_Tdeg(n_vals),
              linestyle='solid', linewidth=3, color='grey' )
     label_deg_n = 5e30
-    label_deg_T = 2e4
+    label_deg_T = 8e0
     # failed attemp to make rotation fit to T_deg-function
     label_deg_n_id = np.where( np.abs(n_vals-label_deg_n) == np.abs(n_vals-label_deg_n).min() )
     label_deg_n_id = label_deg_n_id[0][0]
@@ -508,7 +508,7 @@ def write_plasma_limits_into_plot( ax,
         label_nonideal_angle = 39.
     if xkcd_style:
         label_deg_n = 3e29
-        label_nonideal_T = 1.5e0
+        label_nonideal_T = 1.2e-2
     else:
         label_nonideal_T = 5e-1
     label_nonideal_n = 3e21
@@ -544,7 +544,8 @@ def main():
     T_vals = np.logspace( np.log10(1e-2), np.log10(1e7),  num=1000 )
     n_vals = np.logspace( np.log10(1e5),  np.log10(1e35), num=2000 )
 
-    fname_plot = ''
+    #fname_plot = ''
+    fname_plot = 'plasma_zoo.png'
     xkcd_style = True
 
     # plot configuration

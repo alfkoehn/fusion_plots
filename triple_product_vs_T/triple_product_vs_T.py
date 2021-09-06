@@ -119,6 +119,9 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
                    ITER: ########## REF STILL MISSING #####################
                    TCV: Karpuskov et al., FED Vol. 123, p 468 (2017)
                         https://doi.org/10.1016/j.fusengdes.2017.02.076
+                   EAST: Gao, X. et al., Plasma Sci. Technol. 23, 092001. 
+                         https://doi.org/10/gmptdh
+
         'EUROfusion': data manually extracted from plot used by EUROfusion
                       using the very useful tool WebPlotDigitizer.
 
@@ -183,16 +186,19 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
                                ] )
     elif dataset == 'my_dset':
         names = np.array( ['START', 'Globus-M', 'NSTX', 'MAST', 
-                           'W7-X (lim)', 'W7-X (div)', 'ITER', 'TCV'
+                           'W7-X (lim)', 'W7-X (div)', 'ITER', 'TCV', 
+                           'EAST', 'EAST'
                           ] )
         device_types = np.array( [ 3, 3, 3, 3, 
-                                   1, 1, 2, 2
+                                   1, 1, 2, 2, 
+                                   2, 2
                                  ] )
         T_vals = np.array( [ 0.25, 0.5, 1., 0.9, 
-                             1.,   3.5, 20., 3.7
+                             1.,   3.5, 20., 3.7, 2.1, 1.94
                            ] )
         nTtau_vals = np.array( [ 2.50000000e+16, 4.50000000e+16, 6.00000000e+17, 8.10000000e+17,
-                                 2.00000000e+18, 6.60000000e+19, 3.00000000e+21, 3e18
+                                 2.00000000e+18, 6.60000000e+19, 3.00000000e+21, 3e18, 
+                                 5.8e19, 5.58e19
                                ] )
     elif dataset == 'EUROfusion':
         names = np.array( [ 'T3', 'TFR', 'T10', 'PLT', 
@@ -340,7 +346,7 @@ def main():
     # because labels would otherwise overlap with something
     extra_labels = [ 'TFTR (DT)', 'JT60U', 'Alcator C-mod', 'Alcator', 'JET (DT)', 
                      '?', 'Tore Supra', 'LHD', 'JET', 'ASDEX Upgrade', 'DIII-D',
-                     'ASDEX', 'W7-A', 'W7-AS' ]
+                     'ASDEX', 'W7-A', 'W7-AS', 'EAST' ]
     if len(fname_plot) > 0:
         dpi_scale   = 6
     else:
@@ -482,6 +488,18 @@ def main():
                           xytext=(23, 1.4e21),
                           ha='center', va='bottom'
                         )
+        elif names[ii] == 'EAST':
+            # plt.annotate( '', 
+            #               xy=( T_vals[ii], nTtau_vals[ii]), 
+            #               xytext=(2, 0.7e20),
+            #               arrowprops=dict( arrowstyle="->", shrinkA=0, color='0.2' )
+            #             )
+            # make annotation text (is done once for every case...)
+            plt.annotate( names[ii],
+                          xy=( T_vals[ii], nTtau_vals[ii]), 
+                          xytext=(2, 0.7e20),
+                          ha='center', va='bottom'
+                        )            
 
     # format plot
     ax1.set_xlabel( "$T_i$ in keV" )

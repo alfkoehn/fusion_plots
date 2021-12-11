@@ -104,6 +104,8 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
         'my_dset': separate datapoints extracted from various references,
                    more details are included in my (hand-written) notebook.
                    Following list shows the refs used for each experiment:
+                   ARC: Sorbom et al., Fus Eng Des, Vol. 100, p378-405 (2015) 
+                          https://doi.org/10.1016%2Fj.fusengdes.2015.07.008
                    START: Gates et al., PoP Vol. 5, No. 5, p 1775 (1998)
                           https://doi.org/10.1063/1.872819
                    Globus-M: Gusev et al., NF Vol. 55, p 104016 (2015)

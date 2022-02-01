@@ -7,6 +7,8 @@ This repository consists of plots I made for a lecture "Fusion Research" (which 
 
 The source code for producing the plots should contain references to the original publication or data where available. 
 
+A reference to the released package, see the doi, would be nice and is greatly appreciated. The doi is 10.5281/zenodo.4946068, which should link to the latest release of the package and it also points to this repository, so referencing this doi makes most sense.
+
 Feel free to contact me if you have any questions or requests.
 
 Alf Köhn-Seemann

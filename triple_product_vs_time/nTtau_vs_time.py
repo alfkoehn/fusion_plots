@@ -67,7 +67,7 @@ def get_dataset( dataset='Webster' ):
             [ 1971, 0.005544496169709835,  'ST'], 
             [ 1975, 0.022003379868766233, 'TFR'], 
             [ 1978, 0.06186522810656025,  'PLT'], 
-            [ 1978, 0.24520180197227637,  'Alcator C'], 
+            [ 1978, 0.24520180197227637,  'Alcator A'], 
             [ 1981, 0.11280221433667462,  'PDX'], 
             [ 1983, 1.2020523507668979,   'Alcator C'], 
             [ 1984, 0.45755718141889035,  'DIII'], 
@@ -212,7 +212,97 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
                      labelsize=14, 
                      top='on', right='on' )
 
-    # add annotations to datapoints in a very unefficient way
+    # add annotations to datapoints in a very unefficient (annoying) way
+    # changing the DPI of the image requires to adjust the pixel-offset values
+    # this is realized by the factor dpi_scale, 1 corresponds to dpi=100
+    if len(fname_plot) == 0:
+        dpi_scale = 1
+    else:
+        dpi_scale = 5
+    # loop through dataset
+    for ii in range( name_vals.shape[0] ):
+        # define list for cases which cannot be annotated automatically
+        extra_labels = [ 'Alcator A', 'Alcator C', 'JT60U', 'JT-60U', 'JET', 'ITER' ]
+        # automatic annotation
+        if name_vals[ii] not in extra_labels:
+            if add_ITER:
+                ax1.annotate( name_vals[ii], 
+                              xy=( year_vals[ii], nTtau_vals[ii]), 
+                              xytext=(5*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                            )
+            else:
+                ax1.annotate( name_vals[ii], 
+                              xy=( year_vals[ii], nTtau_vals[ii]), 
+                              xytext=(10*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                            )
+        # handles the above defined extra cases
+        elif name_vals[ii] == 'Alcator A' or name_vals[ii] == 'Alcator C': 
+            if add_ITER:
+                ax1.annotate( name_vals[ii], 
+                              xy=( year_vals[ii], nTtau_vals[ii]), 
+                              xytext=(-35*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                            )
+            else:
+                ax1.annotate( name_vals[ii], 
+                              xy=( year_vals[ii], nTtau_vals[ii]), 
+                              xytext=(-90*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                            )
+        elif (name_vals[ii] == 'JT60U') or (name_vals[ii] == 'JT-60U'):
+            # write left of symbol
+            if (year_vals[ii] < 1990) or ( year_vals[ii] > 1991 and year_vals[ii] < 1995):
+                if add_ITER:
+                    ax1.annotate( name_vals[ii], 
+                                  xy=( year_vals[ii], nTtau_vals[ii]), 
+                                  xytext=(-25*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                                )
+                else:
+                    ax1.annotate( name_vals[ii], 
+                                  xy=( year_vals[ii], nTtau_vals[ii]), 
+                                  #xytext=(-48*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                                  xytext=(-64*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                                )
+            # label above symbol
+            elif year_vals[ii] > 1995:
+                ax1.annotate( name_vals[ii], 
+                              xy=( year_vals[ii], nTtau_vals[ii]), 
+                              xytext=(-20*dpi_scale,7*dpi_scale), textcoords='offset pixels',
+                            )
+            # default case (label right of symbol)
+            else:
+                if add_ITER:
+                    ax1.annotate( name_vals[ii], 
+                                  xy=( year_vals[ii], nTtau_vals[ii]), 
+                                  xytext=(5*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                                )
+                else:
+                    ax1.annotate( name_vals[ii], 
+                                  xy=( year_vals[ii], nTtau_vals[ii]), 
+                                  xytext=(10*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                                )
+        elif name_vals[ii] == 'JET':
+            if year_vals[ii] > 1995:
+                ax1.annotate( name_vals[ii], 
+                              xy=( year_vals[ii], nTtau_vals[ii]), 
+                              xytext=(-6*dpi_scale,9*dpi_scale), textcoords='offset pixels',
+                            )
+            else:
+                if add_ITER:
+                    ax1.annotate( name_vals[ii], 
+                                  xy=( year_vals[ii], nTtau_vals[ii]), 
+                                  xytext=(5*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                                )
+                else:
+                    ax1.annotate( name_vals[ii], 
+                                  xy=( year_vals[ii], nTtau_vals[ii]), 
+                                  xytext=(10*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                                )
+        elif name_vals[ii] == 'ITER':
+            ax1.annotate( name_vals[ii], 
+                          xy=( year_vals[ii], nTtau_vals[ii]), 
+                          xytext=(-20*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                        )
+
+    fig.text( .703, .885, credit_str, fontsize=7 )
 
     make_plot( fname_plot )
 
@@ -221,7 +311,9 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
 
 def main():
 
-    plot_nTtau_time(add_ITER=False)
+    plot_nTtau_time( add_ITER=False, 
+                     fname_plot='nTtau_vs_time.png'
+                   )
 
 
 if __name__ == '__main__':

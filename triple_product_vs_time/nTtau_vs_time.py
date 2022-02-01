@@ -34,6 +34,17 @@ def get_dataset( dataset='Webster' ):
     Webster-paper: Webster, Phys. Educ. (2003), Fig. 3
         https://doi.org/10.1088/0031-9120/38/2/305
     Dataset extracted using the WebPlotDigitizer.
+    TODO for the future: add another dataset with manually extracted data from
+    the original references (and include the original references here)
+
+    Parameters
+    ----------
+    dataset: str
+        Possible values are 'Webster', 'Ikeda'.
+
+    Returns
+    -------
+        nested list
     """
 
     possible_datasets   = ['Ikeda', 'Webster']

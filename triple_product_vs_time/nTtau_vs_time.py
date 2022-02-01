@@ -108,6 +108,16 @@ def extract_data( dataset, data2extract ):
     """
     Extracts the desired data from one of the datasets. Possible value are 
     'year', 'nTtau', 'name'.
+
+    Parameters
+    ----------
+    dataset: nested list
+    data2extract: str
+        Possible values are 'year', nTtau', 'name'
+
+    Returns
+    -------
+    1D numpy array
     """
 
     possible_data2extract   = ['year', 'nTtau', 'name']
@@ -159,10 +169,26 @@ def make_plot( fname_plot='' ):
 #}}}
 
 
-def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True, 
+def plot_nTtau_time( dataset='Webster', add_ITER=False, make_fit=True, 
                      fname_plot='' ):
 #{{{
     """
+    Plot n*T*tau as a function of time for a chosen dataset.
+
+    Parameters
+    ----------
+    dataset: str
+        Possible values are 'Webster', 'Ikeda'.
+    add_ITER: bool, optional
+        If set, an ITER datapoint is added.
+    make_fit: bool, optional
+        Is set to true as default value, will perform a fit to the datapoints
+        (excluding ITER).
+    fname_plot: str, optional
+        If set, plot is written into a file.
+
+    Returns
+    -------
     """
 
     # get the data and scale it where necessary

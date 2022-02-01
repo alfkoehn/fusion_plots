@@ -228,7 +228,7 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
             if add_ITER:
                 ax1.annotate( name_vals[ii], 
                               xy=( year_vals[ii], nTtau_vals[ii]), 
-                              xytext=(5*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                              xytext=(10*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
                             )
             else:
                 ax1.annotate( name_vals[ii], 
@@ -240,7 +240,7 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
             if add_ITER:
                 ax1.annotate( name_vals[ii], 
                               xy=( year_vals[ii], nTtau_vals[ii]), 
-                              xytext=(-35*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                              xytext=(-85*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
                             )
             else:
                 ax1.annotate( name_vals[ii], 
@@ -253,12 +253,11 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
                 if add_ITER:
                     ax1.annotate( name_vals[ii], 
                                   xy=( year_vals[ii], nTtau_vals[ii]), 
-                                  xytext=(-25*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                                  xytext=(-65*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
                                 )
                 else:
                     ax1.annotate( name_vals[ii], 
                                   xy=( year_vals[ii], nTtau_vals[ii]), 
-                                  #xytext=(-48*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
                                   xytext=(-64*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
                                 )
             # label above symbol
@@ -272,7 +271,7 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
                 if add_ITER:
                     ax1.annotate( name_vals[ii], 
                                   xy=( year_vals[ii], nTtau_vals[ii]), 
-                                  xytext=(5*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                                  xytext=(12*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
                                 )
                 else:
                     ax1.annotate( name_vals[ii], 
@@ -289,7 +288,7 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
                 if add_ITER:
                     ax1.annotate( name_vals[ii], 
                                   xy=( year_vals[ii], nTtau_vals[ii]), 
-                                  xytext=(5*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
+                                  xytext=(12*dpi_scale,-5*dpi_scale), textcoords='offset pixels',
                                 )
                 else:
                     ax1.annotate( name_vals[ii], 
@@ -299,7 +298,7 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
         elif name_vals[ii] == 'ITER':
             ax1.annotate( name_vals[ii], 
                           xy=( year_vals[ii], nTtau_vals[ii]), 
-                          xytext=(-20*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
+                          xytext=(-48*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
                         )
 
     fig.text( .703, .885, credit_str, fontsize=7 )
@@ -311,7 +310,7 @@ def plot_nTtau_time( dataset='Webster', add_ITER=True, make_fit=True,
 
 def main():
 
-    plot_nTtau_time( add_ITER=False, 
+    plot_nTtau_time( add_ITER=True, 
                      fname_plot='nTtau_vs_time.png'
                    )
 

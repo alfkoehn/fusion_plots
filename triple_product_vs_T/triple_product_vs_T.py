@@ -104,6 +104,8 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
         'my_dset': separate datapoints extracted from various references,
                    more details are included in my (hand-written) notebook.
                    Following list shows the refs used for each experiment:
+                   ARC: Sorbom et al., Fus Eng Des, Vol. 100, p378-405 (2015) 
+                          https://doi.org/10.1016%2Fj.fusengdes.2015.07.008
                    START: Gates et al., PoP Vol. 5, No. 5, p 1775 (1998)
                           https://doi.org/10.1063/1.872819
                    Globus-M: Gusev et al., NF Vol. 55, p 104016 (2015)
@@ -182,16 +184,16 @@ def get_experimental_dataset( dataset='Bosch', silent=True ):
                                 5.83188960e+17
                                ] )
     elif dataset == 'my_dset':
-        names = np.array( ['START', 'Globus-M', 'NSTX', 'MAST', 
+        names = np.array( ['ARC', 'START', 'Globus-M', 'NSTX', 'MAST',
                            'W7-X (lim)', 'W7-X (div)', 'ITER', 'TCV'
                           ] )
-        device_types = np.array( [ 3, 3, 3, 3, 
+        device_types = np.array( [2, 3, 3, 3, 3, 
                                    1, 1, 2, 2
                                  ] )
-        T_vals = np.array( [ 0.25, 0.5, 1., 0.9, 
+        T_vals = np.array( [27, 0.25, 0.5, 1., 0.9, 
                              1.,   3.5, 20., 3.7
                            ] )
-        nTtau_vals = np.array( [ 2.50000000e+16, 4.50000000e+16, 6.00000000e+17, 8.10000000e+17,
+        nTtau_vals = np.array( [3.1104e21, 2.50000000e+16, 4.50000000e+16, 6.00000000e+17, 8.10000000e+17,
                                  2.00000000e+18, 6.60000000e+19, 3.00000000e+21, 3e18
                                ] )
     elif dataset == 'EUROfusion':
@@ -338,7 +340,7 @@ def main():
     #       would certainly be faster than the following way...
     # list with cases which cannot be annotated automatically
     # because labels would otherwise overlap with something
-    extra_labels = [ 'TFTR (DT)', 'JT60U', 'Alcator C-mod', 'Alcator', 'JET (DT)', 
+    extra_labels = [ 'ITER', 'TFTR (DT)', 'JT60U', 'Alcator C-mod', 'Alcator', 'JET (DT)', 
                      '?', 'Tore Supra', 'LHD', 'JET', 'ASDEX Upgrade', 'DIII-D',
                      'ASDEX', 'W7-A', 'W7-AS' ]
     if len(fname_plot) > 0:
@@ -354,6 +356,12 @@ def main():
                           textcoords='offset pixels',
                         )
         # handles the above defined extra cases
+        elif names[ii] == 'ITER':
+            plt.annotate( names[ii], 
+                          xy=( T_vals[ii], nTtau_vals[ii]), 
+                          xytext=(-50*dpi_scale,-0*dpi_scale), 
+                          textcoords='offset pixels',
+                        )
         elif (names[ii] == 'Alcator C-mod') or (names[ii] == 'Tore Supra'):
             plt.annotate( names[ii], 
                           xy=( T_vals[ii], nTtau_vals[ii]), 
@@ -363,7 +371,7 @@ def main():
         elif names[ii] == 'W7-A':
             plt.annotate( names[ii], 
                           xy=( T_vals[ii], nTtau_vals[ii]), 
-                          xytext=(-8*dpi_scale,-20*dpi_scale), 
+                          xytext=(-8*dpi_scale,-40*dpi_scale), 
                           textcoords='offset pixels',
                         )
         elif names[ii] == 'W7-AS':

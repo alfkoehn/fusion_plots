@@ -498,7 +498,7 @@ def main():
             # make annotation text (is done once for every case...)
             plt.annotate( names[ii],
                           xy=( T_vals[ii], nTtau_vals[ii]), 
-                          xytext=(2.2, 0.7e20),
+                          xytext=(1.5, 0.7e19),
                           ha='center', va='bottom'
                         )            
 

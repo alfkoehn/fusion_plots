@@ -491,6 +491,7 @@ def get_fusion_reactivity_McNally( T_ion, reaction=1, extrapolate=True, silent=T
             , 1.774833e-23, 2.783765e-23, 4.056615e-23, 5.662810e-23, 7.607605e-23, 9.090703e-23, 1.251186e-22
             ] )
     elif reaction_str == 'p11B' or reaction_str == '11Bp':
+        # Table I (page 16, top)
         sigma_v = np.array( [
               2.22553e-40, 1.23679e-37, 4.84893e-34, 3.48445e-32, 5.14265e-31, 3.43360e-30, 1.45314e-29
             , 4.64382e-29, 1.24057e-28, 2.93733e-28, 4.71713e-26, 3.96257e-25, 1.40318e-24, 3.50303e-24

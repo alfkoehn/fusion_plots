@@ -782,7 +782,7 @@ def main():
     ax1.set_yscale('log')
 
     ax1.set_xlabel( r'ion temperature $T$ in keV' )
-    ax1.set_ylabel( r'fusion reactivity $\langle\sigma v\rangle$ in (m$^3$s)' )
+    ax1.set_ylabel( r'fusion reactivity $\langle\sigma v\rangle$ in (m$^3$/s)' )
 
     ax1.grid()
 

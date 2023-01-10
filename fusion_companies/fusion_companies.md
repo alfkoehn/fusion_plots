@@ -1,3 +1,5 @@
+Inspired and started from (http://julien.hillairet.free.fr/wiki/doku.php?id=list_of_fusion_startups)
+
 
 | Company | Started | Location | Concept | Break-even or Reactor Date | Website |
 | ------- | ------- | -------- | ------- | -------------------------- | ------- |

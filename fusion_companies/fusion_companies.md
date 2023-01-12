@@ -8,6 +8,8 @@ Inspired and started from (http://julien.hillairet.free.fr/wiki/doku.php?id=list
 | TAE Technolgies (formerly Tri Alpha Energy) | 1998 | Irvine, CA, USA |   | 2030 [2] | https://tae.com/ |
 | General Fusion                              | 2002 | Vancouver, British Columbia, Canada; Culham, UK |   |  | https://generalfusion.com/ |
 | HyperJet Fusion Corporation (formerly HyperV Technologies Corp.) | 2004 | Chantilly, VA, USA | Plasma jet driven magneto-intertial fusion | |
+| Phoenix                                     | 2005 | Wisconsin | Acceleration-based fusion neutron generator | | https://phoenixwi.com/ |
+| SHINE Technolgies                           | 2005 | Janesville, Wisconsin, USA | Beam-target fusion, fusion-based neutron source | | https://www.shinefusion.com/ |
 | Horne Technologies                          | 2008 | Montana | Inertial electrostatic confinement | 2023 [3] | https://www.hornetechnologies.com/ |
 | Magneto-Intertial Fusion Technolgies, Inc (MIFTI) | 2008 | Tustin, CA, USA | Z-pinch |   | https://miftec.com/ |
 | Tokamak Energy                              | 2009 | Oxford, UK | Spherical tokamak, HTS | 2025 [4] | https://www.tokamakenergy.co.uk |
@@ -17,12 +19,19 @@ Inspired and started from (http://julien.hillairet.free.fr/wiki/doku.php?id=list
 | Helion Energy, Inc.                         | 2013 | Everett, Washington, USA | Magneto-inertial fusion, field-reversed configuration, aneutronic fusion | 2024 [6] | https://www.helionenergy.com |
 | Pulsar Fusion                               | 2014 | Bletchley, UK | Direct fusion drive, field reversed configuration, spacecraft | | https://pulsarfusion.com/products-development/fusion-propulsion
 | CTFusion                                    | 2015 | Seattle, WA, USA | Dynomak, spheromak | | https://www.linkedin.com/company/ctfusion |
+| AGNI Energy Inc.                            | 2017 | Olympia, Washington, USA | Hybrid beam-target approach, E-field + B-field, beam-spin polarization | | https://www.linkedin.com/company/agni-energy |
 | Princeton Satellite Systems                 | 2017 | Plainsboro, New Jersey, USA | Direct Fusion Drive, spacecraft, field-reversed configuration | | https://www.princetonfusionsystems.com/ , https://www.psatellite.com/ |
 | Zap Energy                                  | 2017 | Seattle, Washington, USA | Z-pinch, shear-flow-stabilized | | https://www.zapenergy.com/ |
+| Compact Fusion Systems                      | 2017 | Santa Fe, New Mexico, USA | Liquid metal compression | 2030 [8] | |
+| Avalanche Energy Designs                    | 2018 | Seattle, Washington, USA | Oribtron, electrostatic confinement, micro-scale fusion reactor | | https://www.avalanche.energy/ |
 | Commonwealth Fusion Systems (CFS)           | 2018 | Cambridge, Massachusetts, USA | Tokamak, HTS | 2025 [7] | https://cfs.energy/ |
 | Helicity Space                              | 2018 | Berkely, California, USA | Spacecraft, helicity drive | | https://www.helicityspace.com/ |
+| HB11 Energy                                 | 2019 | Sydney, New South Wales, Australia | Non-thermal fusion, hydrogen-boron11, laser fusion | | https://hb11.energy/ |
+| Marvel Fusion                               | 2019 | Munich, Germany | Laser-driven fusion, diode-pumped laser, hydrogen-boron11 fusion, nanostructured fuel | | https://marvelfusion.com |
 | Renaissance Fusion                          | 2019 | Grenoble, France | Stellarator, HTS, liquid metal walls | | https://renfusion.eu/ |
-
+| Type One Energy Group                       | 2019 | Madison, Wisconsin, USA | Stellarator, additive manufacturing | | https://www.typeoneenergy.com/ |
+| NearStar Fusion                             | 2021 | Chantilly, Virginia, USA | Hypervelocity gradient field fusion, plasma gun, pulsed fusion | 2026 [9] | https://www.nearstarfusion.com/ |
+| Su-N Energy Technology (UK) Ltd             | 2021 | London, UK | Cold fusion, transmutation | 
 
 
 # References
@@ -33,6 +42,8 @@ Inspired and started from (http://julien.hillairet.free.fr/wiki/doku.php?id=list
 5. https://news.yahoo.com/lockheed-says-makes-breakthrough-fusion-energy-project-123840986--finance.html
 6. https://www.geekwire.com/2022/fusion-energy-industry-preps-policymakers-for-one-of-the-biggest-technological-game-changers-ever/, https://newatlas.com/energy/helion-net-electricity-nuclear-fusion-polaris/
 7. https://www.technologyreview.com/2022/02/23/1045122/fusion-power-mit-startup-commonwealth/
+8. https://golden.com/wiki/Compact_Fusion_Systems-3949PG6
+9. https://www.startengine.com/offering/nearstarfusion
 
 *italic*
 

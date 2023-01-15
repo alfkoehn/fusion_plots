@@ -18,7 +18,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | Proton Scientific, Inc.                     | 2012    | Oak Ridge, Tennessee, USA     | ICF, electron beam fusion | | https://golden.com/wiki/Proton_Scientific-999B8JD |
 | Helion Energy, Inc.                         | 2013    | Everett, Washington, USA      | FRC, magnetic compression, aneutronic fusion | 2024 [6] | https://www.helionenergy.com |
 | Pulsar Fusion                               | 2014    | Bletchley, UK                 | FRC, direct fusion drive, spacecraft | | https://pulsarfusion.com/products-development/fusion-propulsion
-| CTFusion                                    | 2015    | Seattle, Washington, USA      | Dynomak, spheromak | | https://www.linkedin.com/company/ctfusion |
+| CTFusion                                    | 2015    | Seattle, Washington, USA      | Dynomak, spheromak | 2030s [2] | https://www.linkedin.com/company/ctfusion |
 | AGNI Energy Inc.                            | 2017    | Olympia, Washington, USA      | Hybrid beam-target approach, E-field + B-field, beam-spin polarization | | https://www.linkedin.com/company/agni-energy |
 | Princeton Satellite Systems                 | 2017    | Plainsboro, New Jersey, USA   | FRC, direct Fusion Drive, spacecraft | | https://www.princetonfusionsystems.com/ , https://www.psatellite.com/ |
 | Zap Energy                                  | 2017    | Seattle, Washington, USA      | Z-pinch, shear-flow-stabilized | | https://www.zapenergy.com/ |

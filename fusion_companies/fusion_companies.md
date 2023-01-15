@@ -31,7 +31,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | Kyoto Fusioneering Ltd.                     | 2019    | Kyoto, Japan                  | Fusion technology, gyroton, breeding blanket | | https://kyotofusioneering.com/en/ |
 | Marvel Fusion                               | 2019    | Munich, Germany               | ICF, laser fusion, diode-pumped laser, H-B11 fusion, nanostructured fuel | | https://marvelfusion.com |
 | NT-TAO                                      | 2019    | Hod Hasharon, Israel          | Compact, proprietary plasma heating method, racetrack configuration | | https://www.nt-tao.com |
-| Renaissance Fusion                          | 2019    | Grenoble, France              | MCF, stellarator, HTS, liquid metal walls | | https://renfusion.eu/ |
+| Renaissance Fusion                          | 2019    | Grenoble, France              | MCF, stellarator, HTS, liquid metal walls | 2027 [2] | https://renfusion.eu/ |
 | Type One Energy Group                       | 2019    | Madison, Wisconsin, USA       | MCF, stellarator, additive manufacturing | | https://www.typeoneenergy.com/ |
 | Electric Fusion Systems                     | 2020    | Broomfield, Colorado, USA     | Liquid metal hydrogen environment, p-Li fusion, aneutronic fusion | 2023 [2] | https://electricfusionsystems.com/ |
 | Energy Singularity                          | 2021    | Shanghai, China               | MCF, compact tokamak, HTS, high-field  | | https://www.energysingularity.cn/en/ | 

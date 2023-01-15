@@ -6,7 +6,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | LPPFusion                                   | 1984    | Middlesex, New Jersey, USA    | Dense plasma focus, pinch         | 2025 [2]   | https://www.lppfusion.com |
 | Energy Matter Conversion Corporation (EMC2) | 1985    | USA                           | Polywell                          | 2027 [1]   | |
 | TAE Technolgies (formerly Tri Alpha Energy) | 1998    | Foothill Ranch, California, USA | FRC, H-B11 fusion               | 2025 [2] | https://tae.com/ |
-| General Fusion                              | 2002    | Vancouver, British Columbia, Canada; Culham, UK | Compression, liquid metal walls |  | https://generalfusion.com/ |
+| General Fusion                              | 2002    | Vancouver, British Columbia, Canada; Culham, UK | Compression, liquid metal walls | 2027 [16] | https://generalfusion.com/ |
 | HyperJet Fusion Corporation (formerly HyperV Technologies Corp.) | 2004 | Chantilly, VA, USA | Plasma jet driven magneto-intertial fusion | |
 | Phoenix                                     | 2005    | Wisconsin, Madison, USA       | Acceleration-based fusion neutron generator | | https://phoenixwi.com/ |
 | SHINE Technolgies                           | 2005    | Janesville, Wisconsin, USA    | Beam-target fusion, fusion-based neutron source | | https://www.shinefusion.com/ |
@@ -73,6 +73,8 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 13. https://www.longviewfusion.com/
 14. https://www.filo.kit.edu/downloads/Forum%20FUSION%20Dtl/Event_FFD_081222/Presentationen/7-Proxima_Fusion_JL%20-%20Dec%208_%202022.pdf
 15. https://www.linkedin.com/company/kronosfusionenergy
+16. https://generalfusion.com/fusion-demo-plant/
+
 
 # Further lists of private fusion projects
 1. http://julien.hillairet.free.fr/wiki/doku.php?id=list_of_fusion_startups

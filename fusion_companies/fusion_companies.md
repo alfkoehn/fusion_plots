@@ -3,7 +3,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 
 | Company                                     | Started | Location                      | Concept                           | Break-even | Website |
 | ------------------------------------------- | ------- | ----------------------------- | --------------------------------- | ---------- | ------- |
-| LPPFusion                                   | 1984    | Middlesex, New Jersey, USA    | Dense plasma focus, pinch         |            | https://www.lppfusion.com |
+| LPPFusion                                   | 1984    | Middlesex, New Jersey, USA    | Dense plasma focus, pinch         | 2025 [2]   | https://www.lppfusion.com |
 | Energy Matter Conversion Corporation (EMC2) | 1985    | USA                           | Polywell                          | 2027 [1]   | |
 | TAE Technolgies (formerly Tri Alpha Energy) | 1998    | Foothill Ranch, California, USA | FRC, H-B11 fusion               | 2025 [2] | https://tae.com/ |
 | General Fusion                              | 2002    | Vancouver, British Columbia, Canada; Culham, UK | Compression, liquid metal walls |  | https://generalfusion.com/ |

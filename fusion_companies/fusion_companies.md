@@ -5,7 +5,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | ------------------------------------------- | ------- | ----------------------------- | --------------------------------- | ---------- | ------- |
 | LPPFusion                                   | 1984    | Middlesex, New Jersey, USA    | Dense plasma focus, pinch         |            | https://www.lppfusion.com |
 | Energy Matter Conversion Corporation (EMC2) | 1985    | USA                           | Polywell                          | 2027 [1]   | |
-| TAE Technolgies (formerly Tri Alpha Energy) | 1998    | Foothill Ranch, California, USA | FRC, H-B11 fusion               | 2030 [2] | https://tae.com/ |
+| TAE Technolgies (formerly Tri Alpha Energy) | 1998    | Foothill Ranch, California, USA | FRC, H-B11 fusion               | 2025 [2] | https://tae.com/ |
 | General Fusion                              | 2002    | Vancouver, British Columbia, Canada; Culham, UK | Compression, liquid metal walls |  | https://generalfusion.com/ |
 | HyperJet Fusion Corporation (formerly HyperV Technologies Corp.) | 2004 | Chantilly, VA, USA | Plasma jet driven magneto-intertial fusion | |
 | Phoenix                                     | 2005    | Wisconsin, Madison, USA       | Acceleration-based fusion neutron generator | | https://phoenixwi.com/ |
@@ -57,7 +57,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 
 # References
 1. https://arpa-e.energy.gov/sites/default/files/5_PARK.pdf
-2. https://www.eetimes.com/carbon-free-energy-by-fusion-technology/
+2. [Fusion Industry Association: The global fusion industry in 2022](https://202e0f23-02b6-4124-8ddc-80f6b1109b43.usrfiles.com/ugd/202e0f_4c69219a702646929d8d45ee358d9780.pdf)
 3. https://www.hornetechnologies.com/
 4. https://doi.org/10.1088%2F978-0-7503-2719-0ch5
 5. https://news.yahoo.com/lockheed-says-makes-breakthrough-fusion-energy-project-123840986--finance.html

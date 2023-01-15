@@ -33,6 +33,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | NT-TAO                                      | 2019    | Hod Hasharon, Israel          | Compact, proprietary plasma heating method, racetrack configuration | | https://www.nt-tao.com |
 | Renaissance Fusion                          | 2019    | Grenoble, France              | MCF, stellarator, HTS, liquid metal walls | | https://renfusion.eu/ |
 | Type One Energy Group                       | 2019    | Madison, Wisconsin, USA       | MCF, stellarator, additive manufacturing | | https://www.typeoneenergy.com/ |
+| Electric Fusion Systems                     | 2020    | Broomfield, Colorado, USA     | Liquid metal hydrogen environment, p-Li fusion, aneutronic fusion | 2023 [2] | https://electricfusionsystems.com/ |
 | Energy Singularity                          | 2021    | Shanghai, China               | MCF, compact tokamak, HTS, high-field  | | https://www.energysingularity.cn/en/ | 
 | EX-Fusion                                   | 2021    | Osaka, Japan                  | ICF, laser driven fusion   | | https://www.ex-fusion.com/ | 
 | Focused Energy GmbH                         | 2021    | Darmstadt, Germany; Austin, Texas, USA   | Laser-based fusion    | | https://focused-energy.world/ |

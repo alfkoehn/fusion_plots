@@ -74,7 +74,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 14. https://www.filo.kit.edu/downloads/Forum%20FUSION%20Dtl/Event_FFD_081222/Presentationen/7-Proxima_Fusion_JL%20-%20Dec%208_%202022.pdf
 15. https://www.linkedin.com/company/kronosfusionenergy
 
-# Further references for private fusion projects
+# Further lists of private fusion projects
 1. http://julien.hillairet.free.fr/wiki/doku.php?id=list_of_fusion_startups
 2. https://nucleus.iaea.org/sites/fusionportal/Pages/FusDIS.aspx
 3. https://www.fusionenergybase.com/organizations

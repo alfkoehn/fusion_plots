@@ -26,6 +26,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | Avalanche Energy Designs                    | 2018    | Seattle, Washington, USA      | Orbitron, electrostatic confinement, micro-scale fusion reactor | | https://www.avalanche.energy/ |
 | Commonwealth Fusion Systems (CFS)           | 2018    | Cambridge, Massachusetts, USA | MCF, tokamak, HTS | 2025 [7] | https://cfs.energy/ |
 | Helicity Space                              | 2018    | Berkely, California, USA      | Spacecraft, helicity drive | | https://www.helicityspace.com/ |
+| Crossfield Fusion                           | 2019    | London, UK                    | Technology for providing fusion fuel | | http://crossfieldfusion.com/ |
 | HB11 Energy                                 | 2019    | Sydney, Australia             | Non-thermal fusion, hydrogen-boron11, laser fusion | | https://hb11.energy/ |
 | Kyoto Fusioneering Ltd.                     | 2019    | Kyoto, Japan                  | Fusion technology, gyroton, breeding blanket | | https://kyotofusioneering.com/en/ |
 | Marvel Fusion                               | 2019    | Munich, Germany               | ICF, laser fusion, diode-pumped laser, H-B11 fusion, nanostructured fuel | | https://marvelfusion.com |

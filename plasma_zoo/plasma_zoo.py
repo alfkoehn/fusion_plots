@@ -143,7 +143,7 @@ def calc_Tnonideal( plasma_density ):
 #;}}}
 
 
-def build_plasma_zoo():
+def build_plasma_zoo(lang='en'):
 #;{{{
     """
     Return a dictionary containing the plasma zoo.
@@ -161,22 +161,40 @@ def build_plasma_zoo():
     dictionary   
     """
 
-    plasma_zoo = {
-            'interstellar\nmedium':     np.array([1e7, .8e0]),      #rather:ne=1e6
-            'solar\ncore':              np.array([1e30, 1e3]),      #ok
-            'ionosphere':               np.array([1e11, 1e-1]),     #ok
-            'flames':                   np.array([1e16, 1e-1]),     #ok
-            r'e$^{-}$'+'gas in\nmetals':np.array([1e29, 5e-2]),     #ok
-            'solar\nwind':              np.array([1e7,  1e1]),      #ok
+    if lang == 'de':
+        plasma_zoo = {
+                'Interstellares\nMedium':     np.array([1e7, .8e0]),      #rather:ne=1e6
+                'Sonnen-\nzentrum':              np.array([1e30, 1e3]),      #ok
+                'Ionosphäre':               np.array([1e11, 1e-1]),     #ok
+                'Flammen':                   np.array([1e16, 1e-1]),     #ok
+                r'e$^{-}$'+'Gas im\nMetal':np.array([1e29, 5e-2]),     #ok
+                'Sonnen-\nwind':              np.array([1e7,  1e1]),      #ok
 #            'interplanetary':          np.array([1e11,1e1]),                  #
-            'gas\ndischarge':           np.array([5e16, 1e0]),      #ok
-            'lightning':                np.array([1e20, 1e0]),      #ok
-            'white\ndwarf':             np.array([1e33, 2e0]),      #ok
-            'solar\ncorona':            np.array([1e15, 1e2]),      #ok
-            'magnetic\nfusion':         np.array([1e20, 1e4]),      #ok
-            'inertial\nfusion':         np.array([1e30, 1e4]),      #300-1000g/cm^3 in burn phase = 1e32 
-            'magnetosphere\nof pulsars':np.array([1e10, 1e6]),      #ok
-            }
+                'Gas-\nentladung':           np.array([5e16, 1e0]),      #ok
+                'Blitze':                np.array([1e20, 1e0]),      #ok
+                'Weiße\nZwerge':             np.array([1e33, 2e0]),      #ok
+                'Sonnen-\ncorona':            np.array([1e15, 1e2]),      #ok
+                'Magnetische\nFusion':         np.array([1e20, 1e4]),      #ok
+                'Inertial-\nFusion':         np.array([1e30, 1e4]),      #300-1000g/cm^3 in burn phase = 1e32 
+                'Magnetosphäre\nvon Pulsaren':np.array([1e10, 1e6]),      #ok
+                }
+    else:
+        plasma_zoo = {
+                'interstellar\nmedium':     np.array([1e7, .8e0]),      #rather:ne=1e6
+                'solar\ncore':              np.array([1e30, 1e3]),      #ok
+                'ionosphere':               np.array([1e11, 1e-1]),     #ok
+                'flames':                   np.array([1e16, 1e-1]),     #ok
+                r'e$^{-}$'+'gas in\nmetals':np.array([1e29, 5e-2]),     #ok
+                'solar\nwind':              np.array([1e7,  1e1]),      #ok
+#            'interplanetary':          np.array([1e11,1e1]),                  #
+                'gas\ndischarge':           np.array([5e16, 1e0]),      #ok
+                'lightning':                np.array([1e20, 1e0]),      #ok
+                'white\ndwarf':             np.array([1e33, 2e0]),      #ok
+                'solar\ncorona':            np.array([1e15, 1e2]),      #ok
+                'magnetic\nfusion':         np.array([1e20, 1e4]),      #ok
+                'inertial\nfusion':         np.array([1e30, 1e4]),      #300-1000g/cm^3 in burn phase = 1e32 
+                'magnetosphere\nof pulsars':np.array([1e10, 1e6]),      #ok
+                }
 
     return plasma_zoo
 
@@ -585,13 +603,17 @@ def main():
 
     if label_plasmas:
         # get the plasma zoo
-        plasma_zoo = build_plasma_zoo()
+        plasma_zoo = build_plasma_zoo(lang=language)
 
         # for xkcd-style, a small correction is necessary
         # otherwise, the following label would overlap with another
         # (due to different font size)
+        # NOTE: ugly and dangerous, as different language have to be manually added
         if xkcd_style:
-            plasma_zoo['lightning'][0] = 5e21
+            if language == 'de':
+                plasma_zoo['Blitze'][0] = 5e21
+            else:
+                plasma_zoo['lightning'][0] = 5e21
     
         write_plasma_zoo_into_plot( ax1, plasma_zoo, plot__lambda_D )
 

@@ -567,7 +567,7 @@ def main():
 
     print( '\n' )
     print( 'Let me know if you have questions, requests or found some bugs.')
-    print( '                                    -- Alf Köhn-Seemann, April 2020\n' )
+    print( '                                    -- Alf Köhn-Seemann, March 2023\n' )
 
     plot__lambda_D = True
     plot__N_D      = True

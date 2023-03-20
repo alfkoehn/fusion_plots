@@ -453,6 +453,7 @@ def make_N_D_contours( fig, ax,
 def write_plasma_limits_into_plot( ax, 
                                    plot__lambda_D=False, xkcd_style=True, 
                                    T_vals=[], n_vals=[],
+                                   lang='en', 
                                    silent=True
                                  ):
 #;{{{
@@ -491,13 +492,22 @@ def write_plasma_limits_into_plot( ax,
         # plasma density in m^-3
         n_vals = np.logspace( np.log10(1e5),  np.log10(1e35), num=2000 )
 
+    if lang == 'de':
+        txt_relPlasma = 'relativistische Plasmen'
+        txt_degPlasma = 'entartete Plasmen'
+        txt_nidPlasma = 'nicht-ideale Plasmen'
+    else:
+        txt_relPlasma = 'relativistic plasmas'
+        txt_degPlasma = 'degenerated plasmas'
+        txt_nidPlasma = 'non-ideal plasmas'
+
     # spatial coordinates (2D) for contour plot
     nn, TT = np.meshgrid( n_vals, T_vals )
  
     # label boundary for relativistic plasmas
     ax.hlines( y=calc_Trel(), xmin=np.nanmin(nn), xmax=np.nanmax(nn),
                linestyles='solid', linewidth=3, colors='grey' )
-    ax.text( 1e20, 9e5, 'relativistic plasmas', color='grey' )
+    ax.text( 1e20, 9e5, txt_relPlasma, color='grey' )
 
     # label boundary for degenerated plasmas
     ax.plot( n_vals, calc_Tdeg(n_vals),
@@ -537,7 +547,7 @@ def write_plasma_limits_into_plot( ax,
         label_nonideal_T = 5e-1
     label_nonideal_n = 3e21
     ax.text( label_deg_n, label_deg_T, 
-             'degenerated plasmas', 
+             txt_degPlasma, 
              rotation=label_deg_angle,
              color='grey' )
 
@@ -545,7 +555,7 @@ def write_plasma_limits_into_plot( ax,
     ax.plot( n_vals, calc_Tnonideal( n_vals ), 
              linestyle='solid', linewidth=3, color='grey' )
     ax.text( label_nonideal_n, label_nonideal_T, 
-             'non-ideal plasmas', 
+             txt_nidPlasma, 
              rotation=label_nonideal_angle,
              color='grey' )
 
@@ -621,6 +631,7 @@ def main():
         write_plasma_limits_into_plot( ax1, 
                                        plot__lambda_D=plot__lambda_D, xkcd_style=xkcd_style, 
                                        T_vals=T_vals, n_vals=n_vals,
+                                       lang=language
                                      )
 
     ax1.set_xscale('log')

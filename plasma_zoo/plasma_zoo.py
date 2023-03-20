@@ -569,11 +569,11 @@ def main():
     print( 'Let me know if you have questions, requests or found some bugs.')
     print( '                                    -- Alf Köhn-Seemann, March 2023\n' )
 
-    plot__lambda_D = True
-    plot__N_D      = True
+    plot__lambda_D = False
+    plot__N_D      = False
     plot__limits   = True
     label_plasmas  = True
-    language       = 'de'   # possible values are 'de' and 'en'
+    language       = 'en'   # possible values are 'de' and 'en'
 
     if language == 'de':
         xlabel  = r'Plasmadichte in m$^{-3}$'
@@ -586,8 +586,8 @@ def main():
     T_vals = np.logspace( np.log10(1e-2), np.log10(1e7),  num=1000 )
     n_vals = np.logspace( np.log10(1e5),  np.log10(1e35), num=2000 )
 
-    fname_plot = ''
-    #fname_plot = 'plasma_zoo.png'
+    #fname_plot = ''
+    fname_plot = 'plasma_zoo_{0}.png'.format(language)
     xkcd_style = True
 
     # plot configuration

@@ -240,6 +240,7 @@ def write_plasma_zoo_into_plot( ax, plasma_zoo,
 
 def make_lambda_D_contours( fig, ax, 
                             T_vals=[], n_vals=[],
+                            lang='en',
                             silent=True,
                           ):
 #;{{{
@@ -273,6 +274,11 @@ def make_lambda_D_contours( fig, ax,
     if len(n_vals) == 0:
         # plasma density in m^-3
         n_vals = np.logspace( np.log10(1e5),  np.log10(1e35), num=2000 )
+
+    if lang == 'en':
+        cb_label    = 'Debye length in m'
+    elif lang == 'de':
+        cb_label    = 'Debyelänge in m'
 
     # spatial coordinates (2D) for contour plot
     nn, TT = np.meshgrid( n_vals, T_vals )
@@ -321,7 +327,7 @@ def make_lambda_D_contours( fig, ax,
     # add colorbar
     cbar = fig.colorbar( cont_lD, fraction=0.046, pad=0.04, ticks=locator )
     cbar.ax.tick_params( direction='in' )
-    cbar.set_label( 'Debye length in m' )
+    cbar.set_label( cb_label )
 
 #;}}}
 
@@ -539,13 +545,21 @@ def main():
     plot__N_D      = True
     plot__limits   = True
     label_plasmas  = True
+    language       = 'de'   # possible values are 'de' and 'en'
+
+    if language == 'de':
+        xlabel  = r'Plasmadichte in m$^{-3}$'
+        ylabel  = r'Temperatur in eV'
+    else:
+        xlabel  = r'plasma density in m$^{-3}$'
+        ylabel  = r'temperature in eV'
 
     # plasma temperature in eV, plasma density in m^-3
     T_vals = np.logspace( np.log10(1e-2), np.log10(1e7),  num=1000 )
     n_vals = np.logspace( np.log10(1e5),  np.log10(1e35), num=2000 )
 
-    #fname_plot = ''
-    fname_plot = 'plasma_zoo.png'
+    fname_plot = ''
+    #fname_plot = 'plasma_zoo.png'
     xkcd_style = True
 
     # plot configuration
@@ -559,6 +573,7 @@ def main():
     if plot__lambda_D:
         make_lambda_D_contours( fig1, ax1, 
                                 T_vals=T_vals, n_vals=n_vals,
+                                lang=language,
                                 silent=True,
                               )
 
@@ -595,8 +610,8 @@ def main():
     ax1.set_xticks([1e5,1e10,1e15,1e20,1e25,1e30,1e35])
     ax1.set_yticks([1e-2,1e0,1e2,1e4,1e6])
 
-    ax1.set_xlabel( r'plasma density in m$^{-3}$' )
-    ax1.set_ylabel( r'temperature in eV' )
+    ax1.set_xlabel( xlabel )
+    ax1.set_ylabel( ylabel )
 
     # force ticks to point inwards
     ax1.tick_params( axis='both', which='both', direction='in',

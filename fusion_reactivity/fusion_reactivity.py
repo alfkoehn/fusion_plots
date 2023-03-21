@@ -725,7 +725,7 @@ def main():
     plot_Hively     = False
     plot_Bosch      = False
     plot_McNally    = True
-    plot_Angulo     = True
+    plot_Angulo     = False     # switch for including p-p Fusion
 
     write_datasource2plot   = False
     write_plotcredit        = True
@@ -767,8 +767,8 @@ def main():
                   label=r'D+$^3$He', linewidth=lw_McNally )
         ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=7), 
                   label=r'$^3$He+$^3$He', linewidth=lw_McNally )
-        #ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=8), 
-        #          label=r'p+$^{11}$B', linewidth=lw_McNally )
+        ax1.plot( T_ion, get_fusion_reactivity_McNally(T_ion, reaction=8), 
+                  label=r'p+$^{11}$B', linewidth=lw_McNally )
 
     if plot_Angulo:
         lw_Angulo   = 3

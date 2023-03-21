@@ -697,13 +697,23 @@ def main():
 
     print
 
+    # possible values for the languare are 'en' and 'de'
+    lang    = 'en'
+
+    if lang == 'de':
+        xlabel  = r'Ionentemperatur $T$ in keV'
+        ylabel  = r'Fusionsreaktivität $\langle\sigma v\rangle$ in (m$^3$/s)'
+    else:
+        xlabel  = r'ion temperature $T$ in keV'
+        ylabel  = r'fusion reactivity $\langle\sigma v\rangle$ in (m$^3$/s)'
+
     # set-up plot
     # (width, heigth) in inches
     fig1 = plt.figure( figsize=(8,6) )
     ax1  = fig1.add_subplot( 1,1,1 )
    
     # if empty, plot will be put out to X-window
-    plot_fname = 'fusion_reactivity.png'
+    plot_fname = 'fusion_reactivity_{0}.png'.format(lang)
     #plot_fname  = ''
 
     # set fusion reaction, see function reaction_int2str
@@ -781,8 +791,8 @@ def main():
     ax1.set_xscale('log')
     ax1.set_yscale('log')
 
-    ax1.set_xlabel( r'ion temperature $T$ in keV' )
-    ax1.set_ylabel( r'fusion reactivity $\langle\sigma v\rangle$ in (m$^3$/s)' )
+    ax1.set_xlabel( xlabel )
+    ax1.set_ylabel( ylabel )
 
     ax1.grid()
 

@@ -23,6 +23,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | Princeton Satellite Systems                 | 2017    | Plainsboro, New Jersey, USA   | FRC, direct Fusion Drive, spacecraft | | https://www.princetonfusionsystems.com/ , https://www.psatellite.com/ |
 | Zap Energy                                  | 2017    | Seattle, Washington, USA      | Z-pinch, shear-flow-stabilized | | https://www.zapenergy.com/ |
 | Compact Fusion Systems                      | 2017    | Santa Fe, New Mexico, USA     | Liquid metal compression | 2030 [8] | |
+| Advanced Ignition S.L.                      | 2018    | Cabanillas del Campo, Spain   | Z-pinch | | http://www.pulsotron.com/ |
 | Avalanche Energy Designs                    | 2018    | Seattle, Washington, USA      | Orbitron, electrostatic confinement, micro-scale fusion reactor | | https://www.avalanche.energy/ |
 | Commonwealth Fusion Systems (CFS)           | 2018    | Cambridge, Massachusetts, USA | MCF, tokamak, HTS | 2025 [7] | https://cfs.energy/ |
 | Helicity Space                              | 2018    | Berkely, California, USA      | Spacecraft, helicity drive | | https://www.helicityspace.com/ |

@@ -50,8 +50,8 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 | Kronos Fusion Energy                        | 2022    | Arlington, Virginia, USA      | MCF, minimum-aspect ratio torus, machine learning | 2036 [15] | https://www.kronosfusionenergy.com/ |
 | Novatron                                    | 2022    | Stockholm, Sweden             | Magnetic mirror, cusp configuration  | 2040 [11] | https://www.novatronfusion.com/ |
 | Princeton Stellarators Inc. (PSI)           | 2022    | Princeton, New Jersey, USA    | MCF, stellarator, HTS, planar magnet arrays |  | https://www.princetonstellarators.energy |
-| Proxima Fusion                              | 2022    | Germany                       | MCF, stellarator, HTS                      | 2030s [14]    | https://proximafusion.com/ | 
 | Realta Fusion                               | 2022    | Madison, Wisconsin, USA       | Magnetic mirror, small-scale, linear, tandem mirror   | 2032 [10] | https://www.realtafusion.com/ |
+| Proxima Fusion                              | 2023    | Munich, Germany               | MCF, stellarator, HTS                      | 2030s [14]    | https://proximafusion.com/ | 
 
 
 **Abbreviations**:

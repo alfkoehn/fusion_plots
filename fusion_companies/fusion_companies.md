@@ -58,6 +58,7 @@ Inspired and started from [Julien Hillairet's list of fusion startups](http://ju
 * MCF: Magnetic confinement fusion
 * ICF: Interial confinement fusion
 * FRC: Field-reversed configuration
+* HTS: High-temperature superconductor
 
 
 # References

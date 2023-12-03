@@ -170,7 +170,7 @@ def make_plot( fname_plot='' ):
 
 
 def plot_nTtau_time( dataset='Webster', add_ITER=False, make_fit=True, 
-                     fname_plot='' ):
+                     fname_plot='', scr_ratio='16:9' ):
 #{{{
     """
     Plot n*T*tau as a function of time for a chosen dataset.
@@ -198,7 +198,10 @@ def plot_nTtau_time( dataset='Webster', add_ITER=False, make_fit=True,
     nTtau_vals  = extract_data( data, 'nTtau' )
 
     # prepare plot
-    fig = plt.figure( figsize=(8,6) )       # (width, height) in inches
+    if scr_ratio == '4:3':
+        fig = plt.figure( figsize=(8,6) )   # (width, height) in inches
+    elif scr_ratio == '16:9':
+        fig = plt.figure( figsize=(11,6) )   # (width, height) in inches
     ax1 = fig.add_subplot( 1,1,1 )          # rows, cols, plotnumber
 
     # optionally, perform and plot a linear fit to log(nTtau) dataset
@@ -337,8 +340,12 @@ def plot_nTtau_time( dataset='Webster', add_ITER=False, make_fit=True,
                           xy=( year_vals[ii], nTtau_vals[ii]), 
                           xytext=(-48*dpi_scale,-6*dpi_scale), textcoords='offset pixels',
                         )
-
-    fig.text( .703, .885, credit_str, fontsize=7 )
+    
+    if scr_ratio == '4:3':
+        credit_x0   = .703
+    elif scr_ratio == '16:9':
+        credit_x0   = .756
+    fig.text( credit_x0, .885, credit_str, fontsize=7 )
 
     make_plot( fname_plot )
 

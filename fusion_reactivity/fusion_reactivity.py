@@ -708,8 +708,14 @@ def main():
         ylabel  = r'fusion reactivity $\langle\sigma v\rangle$ in (m$^3$/s)'
 
     # set-up plot
+    # optimized for display on screens with set aspect ratio
+    # possible values are '4:3', '16:9'
+    scr_ratio   = '16:9'
     # (width, heigth) in inches
-    fig1 = plt.figure( figsize=(8,6) )
+    if scr_ratio == '4:3':
+        fig1 = plt.figure( figsize=(8,6) )
+    elif scr_ratio == '16:9':
+        fig1 = plt.figure( figsize=(10,5) )
     ax1  = fig1.add_subplot( 1,1,1 )
    
     # if empty, plot will be put out to X-window
@@ -725,7 +731,7 @@ def main():
     plot_Hively     = False
     plot_Bosch      = False
     plot_McNally    = True
-    plot_Angulo     = False     # switch for including p-p Fusion
+    plot_Angulo     = True     # switch for including p-p Fusion
 
     write_datasource2plot   = False
     write_plotcredit        = True
@@ -779,7 +785,10 @@ def main():
         
 
     if write_datasource2plot:
-        txt_ref_x0 = .75
+        if scr_ratio == '4:3':
+            txt_ref_x0 = .75
+        elif scr_ratio == '16:9':
+            txt_ref_x0 = .85
         txt_ref_y0 = .84
         fig1.text( txt_ref_x0, txt_ref_y0, txt_ref_str, fontsize=10 )
 
@@ -787,7 +796,7 @@ def main():
     if plot_Angulo:
         ax1.set_ylim( [1e-50, 1e-20] )
     else:
-        ax1.set_ylim( [1e-26, 1e-20] )
+        ax1.set_ylim( [1e-26, 1e-21] )  # upper limit was 1e-20 until 11/2023
     ax1.set_xscale('log')
     ax1.set_yscale('log')
 
@@ -808,7 +817,11 @@ def main():
     # the license for the code is mentioned above and in the LICENSE file
     if write_plotcredit:
         credit_str = u'{0}, CC BY-SA 4.0'.format( __author__ )
-        fig1.text( .7, .885, credit_str, fontsize=7 )
+        if scr_ratio == '4:3:':
+            credit_x0   = .7
+        elif scr_ratio == '16:9':
+            credit_x0   = .743
+        fig1.text( credit_x0, .885, credit_str, fontsize=7 )
 
     make_plot( plot_fname )
 

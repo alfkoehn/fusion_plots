@@ -280,6 +280,9 @@ def main():
     # set fname_plot to an empty string to plot into X-window
     fname_plot = 'triple_product_vs_T.png'
 
+    # set ratio of screen on which plot should be displayed
+    scr_ratio   = '16:9'    # possible values: '4:3', '16:9'
+
     # load Bosch dataset
     T_vals__B, nTtau_vals__B, device_types__B, names__B = get_experimental_dataset( dataset='Bosch' )
     # load my own dataset
@@ -305,7 +308,10 @@ def main():
     F_bremslimit = lambda T_ion, Z_eff: 3.*T_ion**(1.5) / (Z_eff*c_br)
 
     # set-up plot
-    fig1 = plt.figure( figsize=(8,6) )      # (width, height)
+    if scr_ratio == '4:3':
+        fig1 = plt.figure( figsize=(8,6) )      # (width, height)
+    elif scr_ratio == '16:9':
+        fig1 = plt.figure( figsize=(11,6) )      # (width, height)
     ax1  = fig1.add_subplot( 1,1,1 )
 
     # filled area indicating bremsstrahlung limit
@@ -313,7 +319,11 @@ def main():
     ax1.fill_between( x=T_full*1e-3, y1=F_bremslimit(T_full,1)*1e-3, y2=1e22, 
                       color='grey',
                     )
-    ax1.annotate( 'bremsstrahlung limit', xy=( 0.15, 1.1e20), color='.85', rotation=29.5 )
+    if scr_ratio == '4:3':
+        bremsLimit_txt_angle = 29.5
+    elif scr_ratio == '16:9':
+        bremsLimit_txt_angle = 23.5
+    ax1.annotate( 'bremsstrahlung limit', xy=( 0.15, 1.1e20), color='.85', rotation=bremsLimit_txt_angle )
 
     # filled area indicating ignition
     T_ignition  = np.logspace( np.log10(1e3), np.log10(100e3), 100 )
@@ -321,7 +331,11 @@ def main():
     ax1.fill_between( T_ignition[ F_ign_Z1>0 ]*1e-3, 
                       F_ign_Z1[ F_ign_Z1>0 ]*1e-3 , 
                       1e22 )
-    ax1.annotate( 'ignition (DT)', xy=( 8.1, 5.3e21), color='.85' )
+    if scr_ratio == '4:3':
+        ignitionLimit_txt_x0 = 8.1
+    elif scr_ratio == '16:9':
+        ignitionLimit_txt_x0 = 10.5
+    ax1.annotate( 'ignition (DT)', xy=( ignitionLimit_txt_x0, 5.3e21), color='.85' )
 
     # plot experimental values
     # stellarators
@@ -512,9 +526,13 @@ def main():
 
     ax1.legend( loc='lower right' )
 
-    fig1.text( .703, .885, credit_str, fontsize=7 )
+    if scr_ratio == '4:3':
+        credit_x0 = .703
+    elif scr_ratio == '16:9':
+        credit_x0 = .755
+    fig1.text( credit_x0, .885, credit_str, fontsize=7 )
 
-    make_plot( fname_plot='triple_product_vs_T.png' )
+    make_plot( fname_plot=fname_plot )
 
 #;}}}
 

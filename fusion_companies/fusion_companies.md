@@ -88,6 +88,7 @@ __Closed companies:__
 14. https://www.filo.kit.edu/downloads/Forum%20FUSION%20Dtl/Event_FFD_081222/Presentationen/7-Proxima_Fusion_JL%20-%20Dec%208_%202022.pdf
 15. https://www.linkedin.com/company/kronosfusionenergy
 16. https://generalfusion.com/fusion-demo-plant/
+17. https://www.geekwire.com/2023/energy-startup-ctfusion-folds-as-co-founders-land-at-rival-zap/
 
 
 # Further lists of private fusion projects

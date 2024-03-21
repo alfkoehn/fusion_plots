@@ -38,6 +38,7 @@ __Active companies and startups:__
 | Electric Fusion Systems                     | 2020    | Broomfield, Colorado, USA     | Liquid metal hydrogen environment, p-Li fusion, aneutronic fusion | 2023 [2] | https://electricfusionsystems.com/ |
 | Renaissance Fusion                          | 2020    | Grenoble, France              | MCF, stellarator, HTS, liquid metal walls | 2027 [2] | https://renfusion.eu/ |
 | Energy Singularity                          | 2021    | Shanghai, China               | MCF, compact tokamak, HTS, high-field  | | https://www.energysingularity.cn/en/ | 
+| Astral Systems                              | 2021    | Dorchester, UK                | Inertial electrostatic confinement, medical isotopes via fusion   |  | https://www.astralneutronics.com/ | 
 | EX-Fusion                                   | 2021    | Osaka, Japan                  | ICF, laser driven fusion   | 2030s [2] | https://www.ex-fusion.com/ | 
 | Focused Energy GmbH                         | 2021    | Darmstadt, Germany; Austin, Texas, USA   | Laser-based fusion    | 2035 [2] | https://focused-energy.world/ |
 | Helical Fusion                              | 2021    | Tokyo, Japan                  | MCF, stellarator, HTS | | https://www.helicalfusion.com/?lang=en |

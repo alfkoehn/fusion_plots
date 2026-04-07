@@ -20,6 +20,7 @@ __copyright__   = 'University of Stuttgart'
 __license__     = 'MIT'
 
 # import standard modules
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker
@@ -387,8 +388,17 @@ def oplot_ECR( ax, x_range=[], linestyle='solid', linewidth=3, color='black' ):
 def main():
     #;{{{
 
+    # initialize parser for command line options
+    parser  = argparse.ArgumentParser()
+    # add optional arguments
+    parser.add_argument("-f", "--fname_plot", type=str, default='',
+                        help="Filename for plot, ending defines type (png or pdf)." )
+    # read all arguments from command line
+    args        = parser.parse_args()
+    fname_plot  = args.fname_plot
+
     # plot configuration
-    fname_plot  = 'CMA_diagram.png'
+    #fname_plot  = 'CMA_diagram.png'
     # linewidth for O- and X-mode
     lw_O        = 3
     lw_X        = 3

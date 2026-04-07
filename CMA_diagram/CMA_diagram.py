@@ -56,7 +56,15 @@ def make_plot( fname_plot='' ):
 
 
     if len(fname_plot) > 0:
-        plt.savefig( fname_plot, dpi=600, bbox_inches='tight' )
+        if fname_plot[-3:] == 'png':
+            plt.savefig( fname_plot, dpi=600, bbox_inches='tight' )
+        elif fname_plot[-3:] == 'pdf':
+            plt.savefig( fname_plot, bbox_inches='tight' )
+        else:
+            print( 'warning: plot filetype not supported, ')
+            print( '         might have some unwanted sideeffects' )
+            print( '         supported are png and pdf' )
+            plt.savefig( fname_plot, bbox_inches='tight' )
         print( 'written plot into file {0}'.format(fname_plot) )
     else:
         plt.show()

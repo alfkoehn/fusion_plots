@@ -224,38 +224,38 @@ def main():
         ax.set_ylabel( 'binding energy per nucleon in MeV' )
 
     # annotate a few important elements
-    plt.annotate( '$\mathregular{^1H}$',  
+    plt.annotate( r'$\mathregular{^1H}$',  
                   xy=(1,0),   xytext=(2.3,.23), size='large',
                   arrowprops=dict(arrowstyle="->" ) )
-    plt.annotate( '$\mathregular{^2H}$',  
+    plt.annotate( r'$\mathregular{^2H}$',  
                   xy=(2,1),    xytext=(1.3,1.3) ,
                   size='large' )
-    plt.annotate( '$\mathregular{^3H}$',  
+    plt.annotate( r'$\mathregular{^3H}$',  
                   xy=(3,2.83), xytext=(2.1,3),
                   size='large' )
-    plt.annotate( '$\mathregular{^3He}$',  
+    plt.annotate( r'$\mathregular{^3He}$',  
                   xy=(3,2.57), xytext=(2.7,1.7) ,
                   size='large' )
-    plt.annotate( '$\mathregular{^4He}$', 
+    plt.annotate( r'$\mathregular{^4He}$', 
             xy=(4,7),   xytext=(3.1,7.3), size='large' )
-    plt.annotate( '$\mathregular{^6Li}$', 
+    plt.annotate( r'$\mathregular{^6Li}$', 
             xy=(6,5.3), xytext=(4.5,4.7), size='large' )
-    plt.annotate( '$\mathregular{^{9}Be}$', 
+    plt.annotate( r'$\mathregular{^{9}Be}$', 
             xy=(9,6.5), xytext=(20.,4.), size='large',  
             arrowprops=dict(arrowstyle="->" ) )
-    plt.annotate( '$\mathregular{^{11}B}$', 
+    plt.annotate( r'$\mathregular{^{11}B}$', 
             xy=(11,6.9), xytext=(30.,6.), size='large',  
             arrowprops=dict(arrowstyle="->" ) )
-    plt.annotate( '$\mathregular{^{12}C}$', 
+    plt.annotate( r'$\mathregular{^{12}C}$', 
             xy=(12,7.67), xytext=(5.,7.9), size='large',
             arrowprops=dict(arrowstyle="->" ) )
-    plt.annotate( '$\mathregular{^{16}O}$', 
+    plt.annotate( r'$\mathregular{^{16}O}$', 
             xy=(16,8), xytext=(7.,8.2), size='large',
             arrowprops=dict(arrowstyle="->" ) )
-    plt.annotate( '$\mathregular{^{62}Ni}$', 
+    plt.annotate( r'$\mathregular{^{62}Ni}$', 
             xy=(62,8.8), xytext=(35.,7.), size='large',
             arrowprops=dict(arrowstyle="->" ) )
-    plt.annotate( '$\mathregular{^{235}U}$', 
+    plt.annotate( r'$\mathregular{^{235}U}$', 
                   xy=(235,7.6), xytext=(100.,6.), size='large',
                   arrowprops=dict(arrowstyle="->" ) )
 
